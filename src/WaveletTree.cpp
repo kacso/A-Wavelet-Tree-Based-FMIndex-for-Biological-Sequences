@@ -7,6 +7,8 @@ WaveletTree::WaveletTree(std::string text){
 	root = addChild(text);
 }
 
+/**TODO Problem when input text contains only the same characte!!!!!!!*/
+
 WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**Check if text is not empty*/
 	if (text.empty() == 1){
@@ -35,11 +37,11 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 }
 
 char WaveletTree::getMiddleChar(std::string text){
-	unsigned sum = 0;
+	float sum = 0;
 	for (unsigned i = 0; i < text.length(); i++){
 		sum += text[i];
 	}
-	return sum / text.length();
+	return (char)ceil(sum / text.length());
 }
 
 bool* WaveletTree::createBitString(std::string text, char breakChar,
@@ -68,31 +70,36 @@ int WaveletTree::getRank(char character, int index){
 
 int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	/**Check input arguments*/
-	if (root == nullptr || index < 0 || index > root->bitStringLength){
+	if (root == nullptr || index < 0){
 		return -1;
 	}
 	/**We are at leaf, so current index is rank of bitString*/
-	if (character == root->breakChar){
-		return index;
+	if (root->bitStringLength == 0){
+		if (root->breakChar == character) return index + 1;
+		else return 0;
 	}
 	/**Find new index and look for rank in subtree*/
 	else if (character < root->breakChar){
 		int i, newIndex = 0;
+		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
 			if (root->bitString[i] == 0){
 				newIndex++;
 			}
 		}
-		return getRank(character, newIndex, root->leftChild);
+		if (newIndex == 0) return 0;
+		return getRank(character, newIndex - 1, root->leftChild);
 	}
 	else{
 		int i, newIndex = 0;
+		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
 			if (root->bitString[i] == 1){
 				newIndex++;
 			}
 		}
-		return getRank(character, newIndex, root->rightChild);
+		if (newIndex == 0) return 0;
+		return getRank(character, newIndex - 1, root->rightChild);
 	}
 }
 
