@@ -9,19 +9,45 @@ WaveletTree::WaveletTree(std::string text){
 
 WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**Check if text is not empty*/
-	if (!text.empty){
-		return NULL;
+	if (text.empty() == 0){
+		return nullptr;
 	}
 	WaveletTreeItem *treeItem;
-	int textLength = text.length();
+	//int textLength = text.length();
 	char breakChar = getMiddleChar(text);
 	int cntLess = 0, cntHigh = 0;
-	bool *bitString = (bool*)malloc(textLength * sizeof(bool));
-	std::string leftText = NULL, rightText = NULL;
-
+	bool *bitString = nullptr;
+	std::string leftText, rightText;
 
 	/**Create bitString*/
-	for (int i = 0; i <= textLength; i++){
+	createBitString(text, breakChar, leftText, rightText);
+
+	if (cntHigh != cntLess){
+		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
+		(*treeItem).leftChild = addChild(leftText);
+		(*treeItem).rightChild = addChild(rightText);
+	}
+	/**We get to leafs*/
+	else {
+		treeItem = new WaveletTreeItem(text[0], nullptr, 0);
+	}
+	return treeItem;
+}
+
+char WaveletTree::getMiddleChar(std::string text){
+	unsigned sum = 0;
+	for (unsigned i = 0; i < text.length(); i++){
+		sum += text[i];
+	}
+	return sum / text.length();
+}
+
+bool* WaveletTree::createBitString(std::string text, char breakChar,
+		std::string leftText, std::string rightText){
+	int cntLess = 0, cntHigh = 0;
+	bool *bitString = (bool*)malloc(text.length() * sizeof(bool));
+
+	for (unsigned i = 0; i <= text.length(); i++){
 		if (text[i] < breakChar){
 			cntLess++;
 			bitString[i] = false;
@@ -33,25 +59,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 			rightText.append((const char*)text[i]);
 		}
 	}
-
-	if (cntHigh != cntLess){
-		treeItem = new WaveletTreeItem(breakChar, bitString, textLength);
-		(*treeItem).leftChild = addChild(leftText);
-		(*treeItem).rightChild = addChild(rightText);
-	}
-	/**We get to leafs*/
-	else {
-		treeItem = new WaveletTreeItem(text[0], NULL, 0);
-	}
-	return treeItem;
-}
-
-char getMiddleChar(std::string text){
-	unsigned sum = 0;
-	for (int i = 0; i < text.length(); i++){
-		sum += text[i];
-	}
-	return sum / text.length();
+	return bitString;
 }
 
 int WaveletTree::getRank(char character, int index){
@@ -60,7 +68,7 @@ int WaveletTree::getRank(char character, int index){
 
 int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	/**Check input arguments*/
-	if (root == NULL || index < 0 || index > root->bitStringLength){
+	if (root == nullptr || index < 0 || index > root->bitStringLength){
 		return -1;
 	}
 	/**We are at leaf, so current index is rank of bitString*/

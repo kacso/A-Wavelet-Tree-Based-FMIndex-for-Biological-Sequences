@@ -1,3 +1,6 @@
+#ifndef WaveletTreeItem_H
+#define WaveletTreeItem_H
+
 /**WaveletTreeItem defines structure of element in wavelet tree.
 Variables:
 	breakChar : defines middle character in string
@@ -13,11 +16,12 @@ public:
 	bool* bitString;
 	int bitStringLength;
 
-	WaveletTreeItem *leftChild = NULL;
-	WaveletTreeItem *rightChild = NULL;
+	WaveletTreeItem *leftChild = nullptr;
+	WaveletTreeItem *rightChild = nullptr;
 
 public:
 	/**Constructor of WaveletTreeItem class*/
 	WaveletTreeItem(char breakChar, bool* bitString, int bitStringLength) :
 		breakChar(breakChar), bitString(bitString), bitStringLength(bitStringLength){};
 };
+#endif
