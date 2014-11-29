@@ -9,7 +9,7 @@ WaveletTree::WaveletTree(std::string text){
 
 WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**Check if text is not empty*/
-	if (text.empty() == 0){
+	if (text.empty() == 1){
 		return nullptr;
 	}
 	WaveletTreeItem *treeItem;
@@ -20,9 +20,9 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	std::string leftText, rightText;
 
 	/**Create bitString*/
-	createBitString(text, breakChar, leftText, rightText);
+	bitString = createBitString(text, breakChar, &leftText, &rightText);
 
-	if (cntHigh != cntLess){
+	if (leftText.length() > 0 && rightText.length() > 0){
 		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
 		(*treeItem).leftChild = addChild(leftText);
 		(*treeItem).rightChild = addChild(rightText);
@@ -43,20 +43,20 @@ char WaveletTree::getMiddleChar(std::string text){
 }
 
 bool* WaveletTree::createBitString(std::string text, char breakChar,
-		std::string leftText, std::string rightText){
+		std::string *leftText, std::string *rightText){
 	int cntLess = 0, cntHigh = 0;
 	bool *bitString = (bool*)malloc(text.length() * sizeof(bool));
 
-	for (unsigned i = 0; i <= text.length(); i++){
+	for (unsigned i = 0; i < text.length(); i++){
 		if (text[i] < breakChar){
 			cntLess++;
 			bitString[i] = false;
-			leftText.append((const char*)text[i]);
+			(*leftText) += text[i];
 		}
 		else {
 			cntHigh++;
 			bitString[i] = true;
-			rightText.append((const char*)text[i]);
+			(*rightText) += text[i];
 		}
 	}
 	return bitString;
@@ -94,4 +94,8 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 		}
 		return getRank(character, newIndex, root->rightChild);
 	}
+}
+
+WaveletTreeItem* WaveletTree::getRoot(){
+	return root;
 }
