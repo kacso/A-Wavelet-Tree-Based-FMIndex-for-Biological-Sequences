@@ -4,6 +4,7 @@
 /**Constructor for WaveletTree class*/
 WaveletTree::WaveletTree(std::string text){
 	/**Create tree*/
+	text += '$';
 	root = addChild(text);
 }
 
@@ -38,10 +39,10 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 
 char WaveletTree::getMiddleChar(std::string text){
 	float sum = 0;
-	for (unsigned i = 0; i < text.length(); i++){
+	for (unsigned i = 0; i < text.length() - 1; i++){
 		sum += text[i];
 	}
-	return (char)ceil(sum / text.length());
+	return (char)ceil(sum / (text.length() - 1));
 }
 
 bool* WaveletTree::createBitString(std::string text, char breakChar,
