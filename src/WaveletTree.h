@@ -10,5 +10,5 @@ public:
 	int getRank(char character, int index);
 private:
 	WaveletTreeItem* addChild(std::string text);
-	
+	int getRank(char character, int index, WaveletTreeItem *root);
 };

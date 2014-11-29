@@ -46,14 +46,44 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	return treeItem;
 }
 
-int WaveletTree::getRank(char character, int index){
-
-}
-
 char getMiddleChar(std::string text){
 	unsigned sum = 0;
 	for (int i = 0; i < text.length(); i++){
 		sum += text[i];
 	}
 	return sum / text.length();
+}
+
+int WaveletTree::getRank(char character, int index){
+	return getRank(character, index, root);
+}
+
+int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
+	/**Check input arguments*/
+	if (root == NULL || index < 0 || index > root->bitStringLength){
+		return -1;
+	}
+	/**We are at leaf, so current index is rank of bitString*/
+	if (character == root->breakChar){
+		return index;
+	}
+	/**Find new index and look for rank in subtree*/
+	else if (character < root->breakChar){
+		int i, newIndex = 0;
+		for (i = 0; i <= index; i++){
+			if (root->bitString[i] == 0){
+				newIndex++;
+			}
+		}
+		return getRank(character, newIndex, root->leftChild);
+	}
+	else{
+		int i, newIndex = 0;
+		for (i = 0; i <= index; i++){
+			if (root->bitString[i] == 1){
+				newIndex++;
+			}
+		}
+		return getRank(character, newIndex, root->rightChild);
+	}
 }
