@@ -38,6 +38,13 @@ int main()
 	std::cout << "\n LEXICOGRAPHICALLY SORTED WORD IS : \n" << std::endl;
 	for (int i = 0; i<n; i++)
 		std::cout << arr[i] << std::endl;
-		
+
+	std::cout << "\n Looking for number of characters lexicographically before <INSERT CHARACTER>... : \n";
+	char alpha;
+	std::cin >> alpha;
+	int x = std::distance(arr, std::find(arr, arr + n, alpha));
+	std::cout << x;
+	
+	_getch();
 	return 1;
 }
