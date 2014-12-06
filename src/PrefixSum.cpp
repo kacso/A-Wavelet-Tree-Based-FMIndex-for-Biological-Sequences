@@ -18,5 +18,20 @@ int main()
 		arr[i] = alpha;
 		std::cout << alpha << std::endl;
 	}
+
+	//applying the bubble sort
+	for (int i = 1; i<n; i++)
+	{
+		for (int j = 0; j<n - i; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				char tmp;
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+		}
+	}
 	return 1;
 }
