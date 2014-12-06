@@ -33,5 +33,11 @@ int main()
 			}
 		}
 	}
+
+	//printing lexicographically sorted word
+	std::cout << "\n LEXICOGRAPHICALLY SORTED WORD IS : \n" << std::endl;
+	for (int i = 0; i<n; i++)
+		std::cout << arr[i] << std::endl;
+		
 	return 1;
 }
