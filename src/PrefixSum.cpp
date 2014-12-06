@@ -12,7 +12,7 @@ int PrefixSum::count(std::string word, char alpha){
 	for (unsigned i = 0; i < word.length(); ++i)
 	{
 		char alpha = word.at(i);
-		arr[i] = alpha;
+		arr[i] = tolower(alpha);
 		//std::cout << alpha << std::endl;
 	}
 
@@ -36,7 +36,7 @@ int PrefixSum::count(std::string word, char alpha){
 	//for (int i = 0; i < n; i++)
 	//	std::cout << arr[i] << std::endl;
 
-	int x = std::distance(arr, std::find(arr, arr + n, alpha));
+	int x = std::distance(arr, std::find(arr, arr + n, tolower(alpha)));
 	//std::cout << x;
 
 	return x;
