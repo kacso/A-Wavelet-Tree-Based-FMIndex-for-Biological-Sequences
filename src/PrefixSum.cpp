@@ -18,4 +18,5 @@ int main()
 		arr[i] = alpha;
 		std::cout << alpha << std::endl;
 	}
+	return 1;
 }
