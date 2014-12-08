@@ -4,11 +4,8 @@
 /**Constructor for WaveletTree class*/
 WaveletTree::WaveletTree(std::string text){
 	/**Create tree*/
-	text += '$';
 	root = addChild(text);
 }
-
-/**TODO Problem when input text contains only the same characte!!!!!!!*/
 
 WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**Check if text is not empty*/
@@ -104,6 +101,6 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	}
 }
 
-WaveletTreeItem* WaveletTree::getRoot(){
+/*WaveletTreeItem* WaveletTree::getRoot(){
 	return root;
-}
+}*/

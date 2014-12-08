@@ -4,14 +4,15 @@
 #include "WaveletTreeItem.h"
 #include <stdio.h>
 #include <string>
+#include "IOcc.h"
 
-class WaveletTree{
+class WaveletTree : public IOcc{
 private:
 	WaveletTreeItem *root = nullptr;
 public:
 	WaveletTree(std::string text);
-	int getRank(char character, int index);
-	WaveletTreeItem* getRoot();
+	virtual int getRank(char character, int index);
+	//WaveletTreeItem* getRoot();
 private:
 	WaveletTreeItem* addChild(std::string text);
 	int getRank(char character, int index, WaveletTreeItem *root);
