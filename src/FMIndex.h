@@ -20,7 +20,8 @@ public:
 		suffixArray = new SuffixArray(lfTable);
 	}
 
-	int findText(std::string substring);
+	int find(std::string substring);
+	void count(int &start, int &end, std::string substring);
 };
 
 
