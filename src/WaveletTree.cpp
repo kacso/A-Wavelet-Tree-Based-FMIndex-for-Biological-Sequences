@@ -101,6 +101,27 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	}
 }
 
-/*WaveletTreeItem* WaveletTree::getRoot(){
-	return root;
-}*/
+char WaveletTree::getChar(int index){
+	return getChar(index, root);
+}
+
+char WaveletTree::getChar(int index, WaveletTreeItem *root){
+	if (index > root->bitStringLength)
+		return '\0';
+	if (root->bitStringLength == 0)
+		return root->breakChar;
+	int newBiggerIndex = 0;
+	int newSmallerIndex = 0;
+	for (int i = 0; i < index; ++i){
+		if (root->bitString[i] > root->breakChar){
+			++newBiggerIndex;
+		}
+		else {
+			++newSmallerIndex;
+		}
+	}
+	if (root->bitString[index] > root->breakChar)
+		return getChar(newBiggerIndex, root->rightChild);
+	else
+		return getChar(newSmallerIndex, root->leftChild);
+}
