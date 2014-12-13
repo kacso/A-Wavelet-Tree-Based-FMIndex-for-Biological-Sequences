@@ -14,7 +14,7 @@ class WaveletTreeItem{
 public:
 	char breakChar;
 	bool* bitString;
-	int bitStringLength;
+	unsigned bitStringLength;
 
 	WaveletTreeItem *leftChild = nullptr;
 	WaveletTreeItem *rightChild = nullptr;

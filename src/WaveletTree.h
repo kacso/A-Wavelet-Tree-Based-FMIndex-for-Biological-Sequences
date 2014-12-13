@@ -11,14 +11,16 @@ private:
 	WaveletTreeItem *root = nullptr;
 public:
 	WaveletTree(std::string text);
-	virtual int getRank(char character, int index);
-	virtual char getChar(int index);
+	virtual unsigned getRank(char character, unsigned index);
+	virtual char getChar(unsigned index);
+	virtual unsigned indexOf(char character, unsigned rank);
+	virtual unsigned length();
 private:
 	WaveletTreeItem* addChild(std::string text);
-	int getRank(char character, int index, WaveletTreeItem *root);
+	unsigned getRank(char character, unsigned index, WaveletTreeItem *root);
 	char getMiddleChar(std::string text);
 	bool* createBitString(std::string text, char breakChar,
 		std::string *leftText, std::string *rightText);
-	char getChar(int index, WaveletTreeItem *root);
+	char getChar(unsigned index, WaveletTreeItem *root);
 };
 #endif

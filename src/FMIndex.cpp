@@ -7,8 +7,14 @@ int FMIndex::find(std::string substring){
 	int start, end;
 
 	count(start, end, substring);
-
+	if (start > end) return -1;
 	return suffixArray->getItem(start);
+}
+
+int FMIndex::count(std::string substring){
+	int start, end;
+	count(start, end, substring);
+	return end - start;
 }
 
 void FMIndex::count(int &start, int &end, std::string substring){

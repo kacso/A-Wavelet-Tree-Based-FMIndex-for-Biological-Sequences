@@ -3,7 +3,9 @@
 
 class IOcc{
 public:
-	virtual int getRank(char character, int index) = 0;
-	virtual char getChar(int index) = 0;
+	virtual unsigned getRank(char character, unsigned index) = 0;
+	virtual char getChar(unsigned index) = 0;
+	virtual unsigned indexOf(char character, unsigned rank) = 0;
+	virtual unsigned length() = 0;
 };
 #endif

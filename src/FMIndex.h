@@ -3,6 +3,7 @@
 
 #include "LFTable.h"
 #include "SuffixArray.h"
+#include "CompressedSuffixArray.h"
 #include <string>
 
 class FMIndex{
@@ -17,10 +18,12 @@ public:
 
 		/**Create new LF table and suffix array*/
 		lfTable = new LFTable(text);
-		suffixArray = new SuffixArray(lfTable);
+		suffixArray = new CompressedSuffixArray(lfTable);
 	}
 
 	int find(std::string substring);
+	int count(std::string substring);
+private:
 	void count(int &start, int &end, std::string substring);
 };
 

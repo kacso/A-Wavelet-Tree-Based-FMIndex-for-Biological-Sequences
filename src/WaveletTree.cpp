@@ -62,11 +62,11 @@ bool* WaveletTree::createBitString(std::string text, char breakChar,
 	return bitString;
 }
 
-int WaveletTree::getRank(char character, int index){
+unsigned WaveletTree::getRank(char character, unsigned index){
 	return getRank(character, index, root);
 }
 
-int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
+unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *root){
 	/**Check input arguments*/
 	if (root == nullptr || index < 0){
 		return -1;
@@ -78,7 +78,7 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	}
 	/**Find new index and look for rank in subtree*/
 	else if (character < root->breakChar){
-		int i, newIndex = 0;
+		unsigned i, newIndex = 0;
 		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
 			if (root->bitString[i] == 0){
@@ -89,7 +89,7 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 		return getRank(character, newIndex - 1, root->leftChild);
 	}
 	else{
-		int i, newIndex = 0;
+		unsigned i, newIndex = 0;
 		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
 			if (root->bitString[i] == 1){
@@ -101,27 +101,39 @@ int WaveletTree::getRank(char character, int index, WaveletTreeItem *root){
 	}
 }
 
-char WaveletTree::getChar(int index){
+char WaveletTree::getChar(unsigned index){
 	return getChar(index, root);
 }
 
-char WaveletTree::getChar(int index, WaveletTreeItem *root){
+char WaveletTree::getChar(unsigned index, WaveletTreeItem *root){
 	if (index > root->bitStringLength)
 		return '\0';
 	if (root->bitStringLength == 0)
 		return root->breakChar;
 	int newBiggerIndex = 0;
 	int newSmallerIndex = 0;
-	for (int i = 0; i < index; ++i){
-		if (root->bitString[i] > root->breakChar){
+	for (unsigned i = 0; i < index; ++i){
+		if (root->bitString[index] == true){
 			++newBiggerIndex;
 		}
 		else {
 			++newSmallerIndex;
 		}
 	}
-	if (root->bitString[index] > root->breakChar)
+	if (root->bitString[index] == true)
 		return getChar(newBiggerIndex, root->rightChild);
 	else
 		return getChar(newSmallerIndex, root->leftChild);
+}
+
+unsigned WaveletTree::indexOf(char character, unsigned rank){
+	unsigned i = 0;
+	for (; i < root->bitStringLength; ++i) {
+		if (getRank(character, i) == rank) break;
+	}
+	return i;
+}
+
+unsigned WaveletTree::length(){
+	return root->bitStringLength;
 }
