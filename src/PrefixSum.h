@@ -8,7 +8,7 @@
 
 class PrefixSum{
 public:
-	int count(std::string word, char alpha);
+	std::string count(std::string word);
 };
 
 #endif
