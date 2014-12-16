@@ -3,7 +3,7 @@
 #include <iostream>
 #include "PrefixSum.h"
 
-int PrefixSum::count(std::string word, char alpha){
+std::string PrefixSum::count(std::string word){
 
 	char *arr;
 
@@ -12,7 +12,7 @@ int PrefixSum::count(std::string word, char alpha){
 	for (unsigned i = 0; i < word.length(); ++i)
 	{
 		char alpha = word.at(i);
-		arr[i] = tolower(alpha);
+		arr[i] = toupper(alpha);
 		//std::cout << alpha << std::endl;
 	}
 
@@ -30,14 +30,14 @@ int PrefixSum::count(std::string word, char alpha){
 			}
 		}
 	}
-
-	//printing lexicographically sorted word
-	//std::cout << "\n LEXICOGRAPHICALLY SORTED WORD IS : \n" << std::endl;
-	//for (int i = 0; i < n; i++)
-	//	std::cout << arr[i] << std::endl;
-
-	int x = std::distance(arr, std::find(arr, arr + n, tolower(alpha)));
-	//std::cout << x;
-
-	return x;
+	
+	std::string result;
+	for (unsigned i = 0; i < word.length(); ++i)
+	{
+		char alpha = word.at(i);
+		int numberBefore = std::distance(arr, std::find(arr, arr + n, toupper(alpha)));
+		result = result + alpha + " " + std::to_string(numberBefore)+"\n";
+	}
+	
+	return result;
 }
