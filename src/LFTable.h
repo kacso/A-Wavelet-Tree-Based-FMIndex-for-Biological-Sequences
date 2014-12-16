@@ -6,7 +6,7 @@
 class LFTable{
 public:
 	LFTable(std::string *text);
-	int count(char a);
+	std::string count(std::string word);
 	int getRank(char character, int index);
 	IOcc *getLast();
 	IOcc *getFirst();
