@@ -7,8 +7,11 @@
 #include <iostream>
 
 class PrefixSum{
+private:
+	char *arr;
 public:
-	std::string count(std::string word);
+	PrefixSum(std::string word);
+	int count(char alpha);
 };
 
 #endif
