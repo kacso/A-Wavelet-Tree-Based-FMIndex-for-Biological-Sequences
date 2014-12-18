@@ -3,10 +3,10 @@
 #include <iostream>
 #include "PrefixSum.h"
 
-std::string PrefixSum::count(std::string word){
+char *arr;
 
-	char *arr;
-
+PrefixSum::PrefixSum(std::string word)
+{
 	int n = word.length();
 	arr = new char[n];
 	for (unsigned i = 0; i < word.length(); ++i)
@@ -30,14 +30,10 @@ std::string PrefixSum::count(std::string word){
 			}
 		}
 	}
-	
-	std::string result;
-	for (unsigned i = 0; i < word.length(); ++i)
-	{
-		char alpha = word.at(i);
-		int numberBefore = std::distance(arr, std::find(arr, arr + n, toupper(alpha)));
-		result = result + alpha + " " + std::to_string(numberBefore)+"\n";
-	}
-	
-	return result;
+}
+
+int PrefixSum::count(char alpha){
+	int numberBefore = std::distance(arr, std::find(arr, arr + (unsigned)strlen(arr), toupper(alpha)));
+
+	return numberBefore;
 }
