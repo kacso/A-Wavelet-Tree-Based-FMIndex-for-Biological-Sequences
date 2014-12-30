@@ -6,18 +6,18 @@
 #include "WaveletTree.h"
 #include "WaveletTreeItem.h"
 
-std::string textFirst;
-std::string textLast;
 WaveletTree *treeFirst;
 WaveletTree *treeLast;
+PrefixSum *prefixSumFirst;
+PrefixSum *prefixSumLast;
 
 LFTable::LFTable(std::string word)
 {
+	std::string textFirst;
+	std::string textLast;
 	word = word + '$';
 	char **arr;
 	int n = word.length();
-	
-	//dynamic memory allocation
 	arr = new char*[n];
 	for (int i = 0; i<n; i++)
 		arr[i] = new char[n];
@@ -49,6 +49,7 @@ LFTable::LFTable(std::string word)
 			}
 		}
 	}
+
 	
 	for (int i = 0; i < n; i++){
 		std::string str = arr[i];
@@ -59,28 +60,49 @@ LFTable::LFTable(std::string word)
 	//creating WaveletTree
 	treeFirst = new WaveletTree(textFirst);
 	treeLast = new WaveletTree(textLast);
+
+	prefixSumFirst = new PrefixSum(textFirst);
+	prefixSumLast = new PrefixSum(textLast);
 }
 
 int LFTable::countFirst(char sign){
-	PrefixSum prefixSum(textFirst);
-	int result = prefixSum.count(sign);
-	return result;
+	return prefixSumFirst->count(sign);
 }
 
 int LFTable::countLast(char sign){
-	PrefixSum prefixSum(textLast);
-	int result = prefixSum.count(sign);
-	return result;
+	return prefixSumLast->count(sign);
 
 }
 
 int LFTable::getRankFirst(char sign, int index){
-	int result = treeFirst->getRank(sign, index);
-	return result;
+	return treeFirst->getRank(sign, index);
 }
 
 int LFTable::getRankLast(char sign, int index){
-	int result = treeLast->getRank(sign, index);
-	return result;
+	return treeLast->getRank(sign, index);
 
+}
+
+char LFTable::getCharFirst(unsigned index){
+	return treeFirst->getChar(index);
+}
+
+char LFTable::getCharLast(unsigned index){
+	return treeLast->getChar(index);
+}
+
+unsigned LFTable::getIndexFirst(char character, unsigned rank){
+	return treeFirst->indexOf(character, rank);
+}
+
+unsigned LFTable::getIndexLast(char character, unsigned rank){
+	return treeLast->indexOf(character, rank);
+}
+
+unsigned LFTable::getLengthFirst(){
+	return treeFirst->length();
+}
+
+unsigned LFTable::getLengthLast(){
+	return treeLast->length();
 }
