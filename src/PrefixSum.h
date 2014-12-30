@@ -5,10 +5,11 @@
 #include <string>
 #include <conio.h>
 #include <iostream>
+#include <map>
 
 class PrefixSum{
 private:
-	char *arr;
+	std::map<char, unsigned> prefixArray;
 public:
 	PrefixSum(std::string word);
 	int count(char alpha);
