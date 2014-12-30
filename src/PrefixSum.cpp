@@ -1,39 +1,32 @@
 #include <conio.h>
 #include <string>
 #include <iostream>
+#include <map>
 #include "PrefixSum.h"
 
-char *arr;
+std::map<char, unsigned> prefixArray;
 
 PrefixSum::PrefixSum(std::string word)
 {
 	int n = word.length();
-	arr = new char[n];
 	for (unsigned i = 0; i < word.length(); ++i)
 	{
-		char alpha = word.at(i);
-		arr[i] = toupper(alpha);
-		//std::cout << alpha << std::endl;
+		char alpha = toupper(word.at(i));
+		if (prefixArray[alpha]>0) prefixArray[alpha] ++;
+		else prefixArray[alpha] = 1;
 	}
 
-	//applying the bubble sort
-	for (int i = 1; i < n; i++)
-	{
-		for (int j = 0; j<n - i; j++)
-		{
-			if (arr[j] > arr[j + 1])
-			{
-				char tmp;
-				tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
-			}
-		}
+	unsigned count = 0;
+	typedef std::map<char, unsigned>::iterator it_type;
+	for (it_type iterator = prefixArray.begin(); iterator != prefixArray.end(); iterator++) {
+		char sign = iterator->first;
+		unsigned countBefore = iterator->second;
+		unsigned tmp = prefixArray[sign];
+		prefixArray[sign] = count;
+		count += tmp;
 	}
 }
 
 int PrefixSum::count(char alpha){
-	int numberBefore = std::distance(arr, std::find(arr, arr + (unsigned)strlen(arr), toupper(alpha)));
-
-	return numberBefore;
+	return prefixArray[toupper(alpha)];
 }
