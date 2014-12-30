@@ -1,6 +1,8 @@
 #include "WaveletTree.h"
 #include "WaveletTreeItem.h"
 
+#include <iostream>
+
 /**Constructor for WaveletTree class*/
 WaveletTree::WaveletTree(std::string text){
 	/**Create tree*/
@@ -22,13 +24,35 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**Create bitString*/
 	bitString = createBitString(text, breakChar, &leftText, &rightText);
 
-	if (leftText.length() > 0 && rightText.length() > 0){
+	if (leftText.length() > 0 && rightText.length() > 0) {
+		std::cout << "Adding normal; " << text << "\n";
+		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
+		(*treeItem).leftChild = addChild(leftText);
+		(*treeItem).rightChild = addChild(rightText);
+	}
+	else if (checkText(leftText)) {
+		std::cout << "left > 0; " << text << "\n";
+		--breakChar;
+		/**Create bitString*/
+		bitString = createBitString(text, breakChar, &leftText, &rightText);
+
+		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
+		(*treeItem).leftChild = addChild(leftText);
+		(*treeItem).rightChild = addChild(rightText);
+	}
+	else if (checkText(rightText)) {
+		std::cout << "right > 0; " << text << "\n";
+		++breakChar;
+		/**Create bitString*/
+		bitString = createBitString(text, breakChar, &leftText, &rightText);
+
 		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
 		(*treeItem).leftChild = addChild(leftText);
 		(*treeItem).rightChild = addChild(rightText);
 	}
 	/**We get to leafs*/
 	else {
+		std::cout << "leaf; " << text << "\n";
 		treeItem = new WaveletTreeItem(text[0], nullptr, 0);
 	}
 	return treeItem;
@@ -36,10 +60,16 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 
 char WaveletTree::getMiddleChar(std::string text){
 	float sum = 0;
-	for (unsigned i = 0; i < text.length() - 1; i++){
-		sum += text[i];
+	char flag = 0;
+	for (unsigned i = 0; i < text.length(); ++i){
+		if (text[i] != '$') {
+			sum += text[i];
+		}
+		else {
+			flag = 1;
+		}
 	}
-	return (char)ceil(sum / (text.length() - 1));
+	return (char)ceil(sum / (text.length() - flag));
 }
 
 bool* WaveletTree::createBitString(std::string text, char breakChar,
@@ -47,14 +77,14 @@ bool* WaveletTree::createBitString(std::string text, char breakChar,
 	int cntLess = 0, cntHigh = 0;
 	bool *bitString = (bool*)malloc(text.length() * sizeof(bool));
 
-	for (unsigned i = 0; i < text.length(); i++){
+	for (unsigned i = 0; i < text.length(); ++i){
 		if (text[i] < breakChar){
-			cntLess++;
+			++cntLess;
 			bitString[i] = false;
 			(*leftText) += text[i];
 		}
 		else {
-			cntHigh++;
+			++cntHigh;
 			bitString[i] = true;
 			(*rightText) += text[i];
 		}
@@ -80,9 +110,9 @@ unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *r
 	else if (character < root->breakChar){
 		unsigned i, newIndex = 0;
 		index = index > root->bitStringLength ? root->bitStringLength : index;
-		for (i = 0; i <= index; i++){
+		for (i = 0; i <= index; ++i){
 			if (root->bitString[i] == 0){
-				newIndex++;
+				++newIndex;
 			}
 		}
 		if (newIndex == 0) return 0;
@@ -93,7 +123,7 @@ unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *r
 		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
 			if (root->bitString[i] == 1){
-				newIndex++;
+				++newIndex;
 			}
 		}
 		if (newIndex == 0) return 0;
@@ -106,14 +136,14 @@ char WaveletTree::getChar(unsigned index){
 }
 
 char WaveletTree::getChar(unsigned index, WaveletTreeItem *root){
-	if (index > root->bitStringLength)
-		return '\0';
 	if (root->bitStringLength == 0)
 		return root->breakChar;
+	if (index > root->bitStringLength)
+		return '\0';
 	int newBiggerIndex = 0;
 	int newSmallerIndex = 0;
 	for (unsigned i = 0; i < index; ++i){
-		if (root->bitString[index] == true){
+		if (root->bitString[i] == true){
 			++newBiggerIndex;
 		}
 		else {
@@ -136,4 +166,13 @@ unsigned WaveletTree::indexOf(char character, unsigned rank){
 
 unsigned WaveletTree::length(){
 	return root->bitStringLength;
+}
+
+bool WaveletTree::checkText(std::string text){
+	if (text.length() <= 0) return false;
+	char tmp = text[0];
+	for (unsigned i = 1; i < text.length(); ++i){
+		if (tmp != text[i]) return true;
+	}
+	return false;
 }

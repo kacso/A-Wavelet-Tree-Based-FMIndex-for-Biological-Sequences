@@ -18,14 +18,15 @@ int FMIndex::count(std::string substring){
 }
 
 void FMIndex::count(int &start, int &end, std::string substring){
-	int index = substring.length();
+	int index = substring.length() - 1;
 	char nextChar = substring[index--];
-	start = lfTable->count(nextChar) + 1;
-	end = lfTable->count(nextChar + 1);
+	start = lfTable->countLast(nextChar);  //+1
+	
+	end = lfTable->countLast(alphabet[mapAlphabet[nextChar] + 1]) - 1;
 
-	while (index >= 0){
+	while (index > 0){
 		nextChar = substring[index--];
-		start = lfTable->count(nextChar) + lfTable->getRank(nextChar, start - 1) + 1;
-		end = lfTable->count(nextChar) + lfTable->getRank(nextChar, end);
+		start = lfTable->countLast(nextChar) + lfTable->getRankLast(nextChar, start - 1);
+		end = lfTable->countLast(nextChar) + lfTable->getRankLast(nextChar, end) - 1;
 	}
 }

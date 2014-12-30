@@ -5,6 +5,8 @@
 #include "SuffixArray.h"
 #include <map>
 
+#define compressionRatio 4
+
 class CompressedSuffixArray : public SuffixArray{
 private:
 	LFTable *lfTable;

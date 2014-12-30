@@ -22,5 +22,6 @@ private:
 	bool* createBitString(std::string text, char breakChar,
 		std::string *leftText, std::string *rightText);
 	char getChar(unsigned index, WaveletTreeItem *root);
+	bool WaveletTree::checkText(std::string text);
 };
 #endif
