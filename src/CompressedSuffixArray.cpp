@@ -21,13 +21,13 @@ unsigned CompressedSuffixArray::getItem(unsigned i){
 			++newI;
 
 			/**Find new character from LF table*/
-			newChar = lfTable->getCharOfLast(bwtIndex);
+			newChar = lfTable->getCharLast(bwtIndex);
 
 			/**Get rank of character*/
 			unsigned rank = lfTable->getRankLast(newChar, bwtIndex);
 
 			/**Get new bwtIndex*/
-			bwtIndex = lfTable->indexOfFirst(newChar, rank);
+			bwtIndex = lfTable->getIndexFirst(newChar, rank);
 		} while (suffixArray.count(bwtIndex) == 0);
 		//std::cout << "Item calculated\n";
 		return newI + suffixArray[bwtIndex];
@@ -36,11 +36,11 @@ unsigned CompressedSuffixArray::getItem(unsigned i){
 
 void CompressedSuffixArray::generateArray(){
 	std::cout << "Generating suffix array\n";
-	int bwtIndex = 0, sIndex = lfTable->lengthOfLast() - 1;
+	int bwtIndex = 0, sIndex = lfTable->getLengthLast() - 1;
 	char newChar;
 	//while ((newChar = lfTable->getCharOfLast(bwtIndex)) != '\0' && newChar != '\0') {
 	do{
-		newChar = lfTable->getCharOfLast(bwtIndex);
+		newChar = lfTable->getCharLast(bwtIndex);
 		unsigned rank = lfTable->getRankLast(newChar, bwtIndex);
 
 		/**Store index if necessary*/
@@ -49,7 +49,7 @@ void CompressedSuffixArray::generateArray(){
 		}
 
 		/**Find next bwt*/
-		bwtIndex = lfTable->indexOfFirst(newChar, rank);
+		bwtIndex = lfTable->getIndexFirst(newChar, rank);
 
 		if (bwtIndex < 0) break;
 

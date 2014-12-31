@@ -12,9 +12,13 @@ int FMIndex::find(std::string substring){
 }
 
 int FMIndex::count(std::string substring){
-	int start, end;
+	int start, end, cnt;
 	count(start, end, substring);
-	return end - start;
+	cnt = end - start + 1;
+	if (cnt < 0)
+		return -1;
+	else
+		return cnt;
 }
 
 void FMIndex::count(int &start, int &end, std::string substring){
@@ -24,7 +28,7 @@ void FMIndex::count(int &start, int &end, std::string substring){
 	
 	end = lfTable->countLast(alphabet[mapAlphabet[nextChar] + 1]) - 1;
 
-	while (index > 0){
+	while (index >= 0){
 		nextChar = substring[index--];
 		start = lfTable->countLast(nextChar) + lfTable->getRankLast(nextChar, start - 1);
 		end = lfTable->countLast(nextChar) + lfTable->getRankLast(nextChar, end) - 1;
