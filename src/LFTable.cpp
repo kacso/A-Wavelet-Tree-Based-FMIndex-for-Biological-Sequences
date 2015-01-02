@@ -7,8 +7,8 @@
 #include "WaveletTree.h"
 #include "WaveletTreeItem.h"
 
-WaveletTree *treeFirst;
-WaveletTree *treeLast;
+IOcc *treeFirst;
+IOcc *treeLast;
 PrefixSum *prefixSumFirst;
 PrefixSum *prefixSumLast;
 
