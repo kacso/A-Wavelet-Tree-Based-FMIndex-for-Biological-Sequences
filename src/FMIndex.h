@@ -5,7 +5,7 @@
 #include "SuffixArray.h"
 #include "CompressedSuffixArray.h"
 #include <string>
-
+#include <vector>
 #include <algorithm>    // std::sort
 
 class FMIndex{
@@ -26,21 +26,31 @@ public:
 			}
 		}
 		mapAlphabet['$'] = mapAlphabet.size();
-
-		this->alphabet = new char[mapAlphabet.size()];
+		unsigned size = mapAlphabet.size();
+		this->alphabet = new char[size];
 		unsigned i = 0;
 		for (std::map<char, unsigned>::iterator it = mapAlphabet.begin(); it != mapAlphabet.end(); ++it) {
 			alphabet[i++] = it->first;
 		}
-		std::sort(alphabet, alphabet + mapAlphabet.size());
+		std::sort(alphabet, alphabet + size);
+
+		mapAlphabet.erase(mapAlphabet.begin(), mapAlphabet.end());
+
+		for (unsigned i = 0; i < size; ++i){
+			mapAlphabet[alphabet[i]] = i;
+		}
 
 		/**Create new LF table and suffix array*/
 		lfTable = new LFTable(text);
-		suffixArray = new CompressedSuffixArray(lfTable);
+		
+		std::cout << "LFTable size: " << sizeof(*lfTable) << "\n";
+		suffixArray = new CompressedSuffixArray(lfTable, 4);
+		std::cout << "SuffixArray size: " << sizeof(*suffixArray) << "\n";
 		std::cout << "FMIndex created\n";
+		std::cout << "FMIndex size: " << sizeof(*this) << "\n";
 	}
 
-	int find(std::string substring);
+	std::vector<unsigned> find(std::string substring);
 	int count(std::string substring);
 private:
 	void count(int &start, int &end, std::string substring);

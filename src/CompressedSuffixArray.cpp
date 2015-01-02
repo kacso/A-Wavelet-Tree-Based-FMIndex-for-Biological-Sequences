@@ -1,8 +1,10 @@
 #include "CompressedSuffixArray.h"
 
 
-CompressedSuffixArray::CompressedSuffixArray(LFTable *lfTable){
+CompressedSuffixArray::CompressedSuffixArray(LFTable *lfTable, unsigned compressionRatio){
 	this->lfTable = lfTable;
+	this->compressionRatio = compressionRatio > 0 ? compressionRatio : 1;
+	//std::cout << "Compression ratio : " << compressionRatio << "\n";
 	generateArray();
 }
 
@@ -18,6 +20,7 @@ unsigned CompressedSuffixArray::getItem(unsigned i){
 		unsigned bwtIndex = i, newBwtIndex = i;
 		unsigned newI = 0;
 		do{
+			//std::cout << i << "\r";
 			++newI;
 
 			/**Find new character from LF table*/
@@ -35,11 +38,13 @@ unsigned CompressedSuffixArray::getItem(unsigned i){
 }
 
 void CompressedSuffixArray::generateArray(){
-	std::cout << "Generating suffix array\n";
-	int bwtIndex = 0, sIndex = lfTable->getLengthLast() - 1;
-	char newChar;
+	//std::cout << "Generating suffix array\n";
+	unsigned bwtIndex = 0, sIndex = lfTable->getLengthLast() - 1;
+	char newChar = ' ';
 	//while ((newChar = lfTable->getCharOfLast(bwtIndex)) != '\0' && newChar != '\0') {
+	
 	do{
+		std::cout << "Generating suffix array: "<< sIndex << "\r";
 		newChar = lfTable->getCharLast(bwtIndex);
 		unsigned rank = lfTable->getRankLast(newChar, bwtIndex);
 
@@ -54,6 +59,6 @@ void CompressedSuffixArray::generateArray(){
 		if (bwtIndex < 0) break;
 
 		--sIndex;
-	} while (newChar != '$' && newChar != '\0');
-	std::cout << "Suffix array generated\n";
+	} while (newChar != '$' && newChar != '\0' && sIndex > 0);
+	std::cout << "Generating suffix array: completed\n";
 }

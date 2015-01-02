@@ -17,7 +17,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	WaveletTreeItem *treeItem;
 	//int textLength = text.length();
 	char breakChar = getMiddleChar(text);
-	int cntLess = 0, cntHigh = 0;
+	unsigned cntLess = 0, cntHigh = 0;
 	bool *bitString = nullptr;
 	std::string leftText, rightText;
 
@@ -25,13 +25,13 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	bitString = createBitString(text, breakChar, &leftText, &rightText);
 
 	if (leftText.length() > 0 && rightText.length() > 0) {
-		std::cout << "Adding normal; " << text << "\n";
+		//std::cout << "Adding normal; " << text << "\n";
 		treeItem = new WaveletTreeItem(breakChar, bitString, text.length());
 		(*treeItem).leftChild = addChild(leftText);
 		(*treeItem).rightChild = addChild(rightText);
 	}
 	else if (checkText(leftText)) {
-		std::cout << "left > 0; " << text << "\n";
+		//std::cout << "left > 0; " << text << "\n";
 		--breakChar;
 		/**Create bitString*/
 		bitString = createBitString(text, breakChar, &leftText, &rightText);
@@ -41,7 +41,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 		(*treeItem).rightChild = addChild(rightText);
 	}
 	else if (checkText(rightText)) {
-		std::cout << "right > 0; " << text << "\n";
+		//std::cout << "right > 0; " << text << "\n";
 		++breakChar;
 		/**Create bitString*/
 		bitString = createBitString(text, breakChar, &leftText, &rightText);
@@ -52,7 +52,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	}
 	/**We get to leafs*/
 	else {
-		std::cout << "leaf; " << text << "\n";
+		//std::cout << "leaf; " << text << "\n";
 		treeItem = new WaveletTreeItem(text[0], nullptr, 0);
 	}
 	return treeItem;
@@ -74,7 +74,7 @@ char WaveletTree::getMiddleChar(std::string text){
 
 bool* WaveletTree::createBitString(std::string text, char breakChar,
 		std::string *leftText, std::string *rightText){
-	int cntLess = 0, cntHigh = 0;
+	unsigned cntLess = 0, cntHigh = 0;
 	bool *bitString = (bool*)malloc(text.length() * sizeof(bool));
 
 	for (unsigned i = 0; i < text.length(); ++i){
@@ -140,8 +140,8 @@ char WaveletTree::getChar(unsigned index, WaveletTreeItem *root){
 		return root->breakChar;
 	if (index > root->bitStringLength)
 		return '\0';
-	int newBiggerIndex = 0;
-	int newSmallerIndex = 0;
+	unsigned newBiggerIndex = 0;
+	unsigned newSmallerIndex = 0;
 	for (unsigned i = 0; i < index; ++i){
 		if (root->bitString[i] == true){
 			++newBiggerIndex;

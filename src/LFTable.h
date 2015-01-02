@@ -15,6 +15,13 @@ private:
 	IOcc *treeLast;
 	PrefixSum *prefixSumFirst;
 	PrefixSum *prefixSumLast;
+
+	/**Danijel*/
+	void max_heapify(char** arr, int i, int n);
+	void heapsort(char **arr, int n);
+	void build_maxheap(char **arr, int n);
+	void switchItmes(char *&x, char *&y);
+
 public:
 	LFTable(std::string word);
 	int countFirst(char sign);
