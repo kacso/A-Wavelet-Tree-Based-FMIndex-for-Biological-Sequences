@@ -1,5 +1,4 @@
 #include "FMIndex.h"
-#include <iomanip>
 
 /**Algoritham from Wikipedia (http://en.wikipedia.org/wiki/FM-index#cite_note-opportunistic_2000-1)
 	for find & count*/
@@ -17,7 +16,7 @@ std::vector<unsigned> FMIndex::find(std::string substring){
 	
 	//std::vector<unsigned>::iterator it = results.begin();
 	for (int i = start; i <= end; ++i){
-		std::cout << "Generating results: " << std::setw(10) << i << "\r";
+		std::cout << "Generating results: " << i << "\r";
 		results[i - start] = suffixArray->getItem(i);
 	}
 	std::cout << "Generating results: completed\n";

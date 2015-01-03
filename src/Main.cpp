@@ -58,8 +58,9 @@ int main(){
 		std::cout << "Enter search pattern: ";
 		std::cin >> search;
 		std::cout << "Count: " << index->count(search) << "\n";
-		std::cout << "Find: ";
 		std::vector<unsigned> results = index->find(search);
+
+		std::cout << "\rFind: ";
 		if (results.empty()){
 			std::cout << "Can't find pattern: " << search;
 		}

@@ -5,16 +5,19 @@
 #include <stdio.h>
 #include <string>
 #include "IOcc.h"
+#include <list>
 
 class WaveletTree : public IOcc{
 private:
 	WaveletTreeItem *root = nullptr;
+	std::list<char> alphabetList;
 public:
 	WaveletTree(std::string text);
 	virtual unsigned getRank(char character, unsigned index);
 	virtual char getChar(unsigned index);
 	virtual unsigned indexOf(char character, unsigned rank);
 	virtual unsigned length();
+	virtual unsigned getAlphabet(char *&arr);
 private:
 	WaveletTreeItem* addChild(std::string text);
 	unsigned getRank(char character, unsigned index, WaveletTreeItem *root);

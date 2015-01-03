@@ -7,5 +7,6 @@ public:
 	virtual char getChar(unsigned index) = 0;
 	virtual unsigned indexOf(char character, unsigned rank) = 0;
 	virtual unsigned length() = 0;
+	virtual unsigned getAlphabet(char *&arr) = 0;
 };
 #endif

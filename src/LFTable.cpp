@@ -4,15 +4,14 @@
 
 #include "LFTable.h"
 #include "PrefixSum.h"
-#include "WaveletTree.h"
-#include "WaveletTreeItem.h"
+#include "SuffixArray.h"
 
 IOcc *treeFirst;
 IOcc *treeLast;
 PrefixSum *prefixSumFirst;
 PrefixSum *prefixSumLast;
 
-LFTable::LFTable(std::string word)
+LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 {
 	std::cout << "Creating LF Table\n";
 	std::string textFirst;
@@ -60,7 +59,9 @@ LFTable::LFTable(std::string word)
 	//build_maxheap(arr, n);
 	heapsort(arr, n);
 	
-	
+	/**Genereate suffix Array*/
+	suffixArray->generateArray(this, arr);
+
 	for (int i = 0; i < n; i++){
 		std::cout << "Generating LF: " << i << "\r";
 		std::string str = arr[i];
@@ -121,6 +122,10 @@ unsigned LFTable::getLengthLast(){
 	return treeLast->length();
 }
 
+unsigned LFTable::getAlphabet(char *&arr){
+	return treeLast->getAlphabet(arr);
+}
+
 /**Danijel
 	Implementation of heap sort
 */
@@ -147,7 +152,7 @@ void LFTable::build_maxheap(char **arr, int n) {
 void LFTable::heapsort(char **arr, int n) {
 	build_maxheap(arr, n - 1);
 	for (int i = n - 1; i > 0;) {
-		std::cout << "Sorting: " << i << "\r";
+		std::cout << "Sorting: " << i << "\t\r";
 		switchItmes(arr[0], arr[i]);
 		max_heapify(arr, 0, --i);
 	}

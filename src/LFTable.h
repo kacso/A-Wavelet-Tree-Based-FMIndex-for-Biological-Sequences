@@ -9,6 +9,8 @@
 #include "PrefixSum.h"
 #include "WaveletTree.h"
 
+class SuffixArray;
+
 class LFTable{
 private:
 	IOcc *treeFirst;
@@ -23,7 +25,7 @@ private:
 	void switchItmes(char *&x, char *&y);
 
 public:
-	LFTable(std::string word);
+	LFTable(std::string word, SuffixArray *suffixArray);
 	int countFirst(char sign);
 	int countLast(char sign);
 	int getRankFirst(char sign, int index);
@@ -34,6 +36,7 @@ public:
 	unsigned LFTable::getIndexLast(char character, unsigned rank);
 	unsigned LFTable::getLengthFirst();
 	unsigned LFTable::getLengthLast();
+	unsigned getAlphabet(char *&arr);
 };
 
 #endif

@@ -2,11 +2,17 @@
 #include "WaveletTreeItem.h"
 
 #include <iostream>
+#include <list>
+#include <vector>
+#include <algorithm>
 
 /**Constructor for WaveletTree class*/
 WaveletTree::WaveletTree(std::string text){
 	/**Create tree*/
 	root = addChild(text);
+
+	/**Sort alphabet*/
+	alphabetList.sort();
 }
 
 WaveletTreeItem* WaveletTree::addChild(std::string text){
@@ -54,6 +60,9 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	else {
 		//std::cout << "leaf; " << text << "\n";
 		treeItem = new WaveletTreeItem(text[0], nullptr, 0);
+
+		/**Add char to alphabet*/
+		alphabetList.push_back(text[0]);
 	}
 	return treeItem;
 }
@@ -92,11 +101,53 @@ bool* WaveletTree::createBitString(std::string text, char breakChar,
 	return bitString;
 }
 
-unsigned WaveletTree::getRank(char character, unsigned index){
+/*unsigned WaveletTree::getRank(char character, unsigned index){
 	return getRank(character, index, root);
+}*/
+
+/**Loop*/
+unsigned WaveletTree::getRank(char character, unsigned index){
+	WaveletTreeItem *parent = root;
+	unsigned retVal = -1;
+	while (parent != nullptr && index >= 0){
+		/**We are at leaf, so current index is rank of bitString*/
+		if (parent->bitStringLength == 0){
+			if (parent->breakChar == character) return index + 1;
+			else return 0;
+		}
+		/**Find new index and look for rank in subtree*/
+		else if (character < parent->breakChar){
+			unsigned i, newIndex = 0;
+			index = index > parent->bitStringLength ? parent->bitStringLength : index;
+			for (i = 0; i <= index; ++i){
+				if (parent->bitString[i] == false){
+					++newIndex;
+				}
+			}
+			if (newIndex == 0) return 0;
+			//return getRank(character, newIndex - 1, parent->leftChild);
+			index = newIndex - 1;
+			parent = parent->leftChild;
+		}
+		else{
+			unsigned i, newIndex = 0;
+			index = index > parent->bitStringLength ? parent->bitStringLength : index;
+			for (i = 0; i <= index; i++){
+				if (parent->bitString[i] == true){
+					++newIndex;
+				}
+			}
+			if (newIndex == 0) return 0;
+			//return getRank(character, newIndex - 1, parent->rightChild);
+			index = newIndex - 1;
+			parent = parent->rightChild;
+		}
+	}
+	return retVal;
 }
 
 unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *root){
+	std::cout << "Recursion!\n";
 	/**Check input arguments*/
 	if (root == nullptr || index < 0){
 		return -1;
@@ -111,7 +162,7 @@ unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *r
 		unsigned i, newIndex = 0;
 		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; ++i){
-			if (root->bitString[i] == 0){
+			if (root->bitString[i] == false){
 				++newIndex;
 			}
 		}
@@ -122,7 +173,7 @@ unsigned WaveletTree::getRank(char character, unsigned index, WaveletTreeItem *r
 		unsigned i, newIndex = 0;
 		index = index > root->bitStringLength ? root->bitStringLength : index;
 		for (i = 0; i <= index; i++){
-			if (root->bitString[i] == 1){
+			if (root->bitString[i] == true){
 				++newIndex;
 			}
 		}
@@ -157,7 +208,7 @@ char WaveletTree::getChar(unsigned index, WaveletTreeItem *root){
 }
 
 unsigned WaveletTree::indexOf(char character, unsigned rank){
-	unsigned i = 0;
+	unsigned i = rank - 1;
 	for (; i < root->bitStringLength; ++i) {
 		if (getRank(character, i) == rank) break;
 	}
@@ -175,4 +226,14 @@ bool WaveletTree::checkText(std::string text){
 		if (tmp != text[i]) return true;
 	}
 	return false;
+}
+
+unsigned WaveletTree::getAlphabet(char *&arr){
+	unsigned size = alphabetList.size();
+	arr = new char[alphabetList.size()];
+	std::list<char>::iterator it = alphabetList.begin();
+	for (unsigned i = 0; i < size; ++i, ++it){
+		arr[i] = *it;
+	}
+	return size;
 }
