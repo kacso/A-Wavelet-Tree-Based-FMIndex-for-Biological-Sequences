@@ -5,9 +5,11 @@
 #include "LFTable.h"
 #include "PrefixSum.h"
 #include "SuffixArray.h"
+#include "HeapSort.h"
+#include "Sort.h"
 
-IOcc *treeFirst;
-IOcc *treeLast;
+WaveletTree *treeFirst;
+WaveletTree *treeLast;
 PrefixSum *prefixSumFirst;
 PrefixSum *prefixSumLast;
 
@@ -19,57 +21,52 @@ LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 	word = word + '$';
 	char **arr;
 	int n = word.length();
+
+
+	std::cout << "Creating rotations...\r";
+
 	arr = new char*[n];
-	for (int i = 0; i<n; i++)
-		arr[i] = new char[n];
-	
-	char* sentence = new char[n];
+	/*for (int i = 0; i<n; i++)
+		arr[i] = new char[n + 1];
+*/
+	char* sentence = new char[n + 1];
 	sentence[0] = '\0';
 	strncat_s(sentence, n+1, word.c_str(), n);
 	arr[0] = sentence;
 	for (int i = 1; i < n; i++){
-		std::cout << "Creating rotations: " << i << "\r";
+		//std::cout << "Creating rotations: " << i << "\r";
 		word = word.back()+word.substr(0, n - 1);
-		sentence = new char[n];
+		sentence = new char[n + 1];
 		sentence[0] = '\0';
 		strncat_s(sentence, n + 1, word.c_str(), n);
 		arr[i] = sentence;
 	}
 	std::cout << "Creating rotations: completed\n";
+	
+	Sort *sort = new HeapSort();
+	sort->sort(arr, n);
+	delete sort;
 
-	//applying the bubble sort
-	/*bool flag = true;
-	for (int i = 1; i<n && flag; i++)
-	{
-		flag = false;
-		for (int j = 0; j<n - i; j++)
-		{
-			std::cout << i << ", " << j << "\r";
-			if (_strcmpi(arr[j], arr[j + 1])>0)
-			{
-				char*tmp;
-				tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
-				flag = true;
-			}
-		}
-	}*/
-	
-	//build_maxheap(arr, n);
-	heapsort(arr, n);
-	
 	/**Genereate suffix Array*/
 	suffixArray->generateArray(this, arr);
 
+	std::cout << "Generating LF...\r";
+
 	for (int i = 0; i < n; i++){
-		std::cout << "Generating LF: " << i << "\r";
+		//std::cout << "Generating LF: " << i << "\r";
 		std::string str = arr[i];
 		textFirst += str.at(0);
 		textLast += str.back();
 	}
 	std::cout << "Generating LF: completed\n";
 
+	std::cout << "Releasing allocated space...\r";
+	/**Free allocated space*/
+	for (int i = n - 1; i >= 0; --i){
+		delete []arr[i];
+	}
+	delete []arr;
+	std::cout << "Releasing allocated space: completed\n";
 	//creating WaveletTree
 	treeFirst = new WaveletTree(textFirst);
 	treeLast = new WaveletTree(textLast);
@@ -124,43 +121,4 @@ unsigned LFTable::getLengthLast(){
 
 unsigned LFTable::getAlphabet(char *&arr){
 	return treeLast->getAlphabet(arr);
-}
-
-/**Danijel
-	Implementation of heap sort
-*/
-// Heap sort - setting heap
-void LFTable::max_heapify(char **arr, int i, int n) {
-	int j = 2 * i;
-	char *item = arr[i];
-	while (j <= n) {
-		if ((j < n) && (_strcmpi(arr[j], arr[j + 1]) < 0)) j++;
-		if (_strcmpi(item, arr[j]) >= 0) break;
-		arr[j / 2] = arr[j];
-		j *= 2;
-	}
-	arr[j / 2] = item;
-}
-
-// Heap sort - initial heap
-void LFTable::build_maxheap(char **arr, int n) {
-	for (int i = n / 2; i >= 0; --i)
-		max_heapify(arr, i, n);
-}
-
-// Heap sort 
-void LFTable::heapsort(char **arr, int n) {
-	build_maxheap(arr, n - 1);
-	for (int i = n - 1; i > 0;) {
-		std::cout << "Sorting: " << i << "\t\r";
-		switchItmes(arr[0], arr[i]);
-		max_heapify(arr, 0, --i);
-	}
-	std::cout << "Sorting: completed\n";
-}
-
-void LFTable::switchItmes(char *&x, char *&y){
-	char *tmp = x;
-	x = y;
-	y = tmp;
 }

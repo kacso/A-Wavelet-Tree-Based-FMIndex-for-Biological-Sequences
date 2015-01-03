@@ -8,7 +8,6 @@
 #include "FMIndex.h"
 #include "PrefixSum.h"
 
-
 void printTree(WaveletTreeItem *root){
 	if (root == nullptr || root->bitStringLength == 0) return;
 	for (unsigned i = 0; i < root->bitStringLength; i++){
@@ -52,13 +51,14 @@ int main(){
 	//std::cout << "Count: " << (new PrefixSum(text))->count('C') << "\n";
 	//std::cout << "Count: " << lfTable.countLast('C') << "\n";
 
-	FMIndex *index = new FMIndex(text);
+	FMIndex index = FMIndex(text);
+	
 	std::string search;
-	while (1){
+	do {
 		std::cout << "Enter search pattern: ";
 		std::cin >> search;
-		std::cout << "Count: " << index->count(search) << "\n";
-		std::vector<unsigned> results = index->find(search);
+		std::cout << "Count: " << index.count(search) << "\n";
+		std::vector<unsigned> results = index.find(search);
 
 		std::cout << "\rFind: ";
 		if (results.empty()){
@@ -70,7 +70,7 @@ int main(){
 			}
 		}
 		std::cout << "\n";
-	}
+	} while (search[0] != '0');
 
 	return 0;
 }

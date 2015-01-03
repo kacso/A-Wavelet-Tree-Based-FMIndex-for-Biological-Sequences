@@ -41,9 +41,8 @@ void CompressedSuffixArray::generateArray(LFTable *lfTable, char **arr){
 	this->lfTable = lfTable;
 
 	int i = 0, strLast = strlen(arr[0]) - 1;
+	std::cout << "Generating suffix array...\r";
 	do{
-		std::cout << "Generating suffix array: " << i << "   \r";
-
 		/**Store index if necessary*/
 		if (i % compressionRatio == 0 || arr[i][strLast - 1] == '$'){
 			suffixArray[i] = strLast - (strchr(arr[i], '$') - arr[i]);
