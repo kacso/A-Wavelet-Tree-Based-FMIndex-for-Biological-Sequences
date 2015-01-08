@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <string>
-#include <conio.h>
+//#include <conio.h>
 #include <iostream>
 #include "IOcc.h"
 #include "PrefixSum.h"
@@ -17,6 +17,8 @@ private:
 	IOcc *treeLast;
 	PrefixSum *prefixSumFirst;
 	PrefixSum *prefixSumLast;
+	WaveletTree** createRotations(std::string word, unsigned n);
+	void createFirstAndLast(WaveletTree **arr, std::string &textFirst, std::string &textLast);
 
 public:
 	LFTable(std::string word, SuffixArray *suffixArray);
@@ -24,12 +26,12 @@ public:
 	int countLast(char sign);
 	int getRankFirst(char sign, int index);
 	int getRankLast(char sign, int index);
-	char LFTable::getCharFirst(unsigned index);
-	char LFTable::getCharLast(unsigned index);
-	unsigned LFTable::getIndexFirst(char character, unsigned rank);
-	unsigned LFTable::getIndexLast(char character, unsigned rank);
-	unsigned LFTable::getLengthFirst();
-	unsigned LFTable::getLengthLast();
+	char getCharFirst(unsigned index);
+	char getCharLast(unsigned index);
+	unsigned getIndexFirst(char character, unsigned rank);
+	unsigned getIndexLast(char character, unsigned rank);
+	unsigned getLengthFirst();
+	unsigned getLengthLast();
 	unsigned getAlphabet(char *&arr);
 };
 

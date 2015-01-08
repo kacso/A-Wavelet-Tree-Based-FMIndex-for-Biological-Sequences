@@ -17,8 +17,8 @@ private:
 	
 public:
 	FMIndex(std::string text){
-		std::cout << "Creating FMIndex\n";
-		
+		std::cout << "Creating FMIndex\n" << std::flush;
+
 		suffixArray = new CompressedSuffixArray(1);
 
 		/**Create new LF table and suffix array*/
@@ -32,10 +32,10 @@ public:
 			mapAlphabet[alphabet[i]] = i;
 		}
 
-		std::cout << "Generating alphabet: completed\n";
+		std::cout << "Generating alphabet: completed\n" << std::flush;
 
 
-		std::cout << "FMIndex created\n";
+		std::cout << "FMIndex created\n" << std::flush;
 	}
 
 	std::vector<unsigned> find(std::string substring);

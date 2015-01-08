@@ -11,7 +11,7 @@ private:
 	unsigned compressionRatio = 1;
 public:
 	CompressedSuffixArray(unsigned compressionRatio);
-	virtual void generateArray(LFTable *lfTable, char **arr);
+	virtual void generateArray(LFTable *lfTable, WaveletTree **arr);
 	virtual unsigned getItem(unsigned i);
 
 private:

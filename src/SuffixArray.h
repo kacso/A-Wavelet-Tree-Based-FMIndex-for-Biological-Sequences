@@ -5,7 +5,7 @@
 
 class SuffixArray{
 public:
-	virtual void generateArray(LFTable *lfTable, char **arr) = 0;
+	virtual void generateArray(LFTable *lfTable, WaveletTree **arr) = 0;
 	virtual unsigned getItem(unsigned i) = 0;
 };
 #endif

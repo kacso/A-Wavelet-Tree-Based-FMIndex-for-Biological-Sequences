@@ -1,6 +1,8 @@
 #ifndef WaveletTreeItem_H
 #define WaveletTreeItem_H
 
+#include <vector>
+
 /**WaveletTreeItem defines structure of element in wavelet tree.
 Variables:
 	breakChar : defines middle character in string
@@ -13,15 +15,16 @@ Variables:
 class WaveletTreeItem{
 public:
 	char breakChar;
-	bool* bitString;
 	unsigned bitStringLength;
+
+	std::vector<bool> bitString;
 
 	WaveletTreeItem *leftChild = nullptr;
 	WaveletTreeItem *rightChild = nullptr;
 
 public:
 	/**Constructor of WaveletTreeItem class*/
-	WaveletTreeItem(char breakChar, bool* bitString, int bitStringLength) :
+	WaveletTreeItem(char breakChar, std::vector<bool> bitString, int bitStringLength) :
 		breakChar(breakChar), bitString(bitString), bitStringLength(bitStringLength){};
 };
 #endif

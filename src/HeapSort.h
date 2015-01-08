@@ -3,7 +3,7 @@
 
 #include "Sort.h"
 
-class HeapSort : public Sort{
+class HeapSort {
 public:
 	virtual void sort(char **arr, int n);
 

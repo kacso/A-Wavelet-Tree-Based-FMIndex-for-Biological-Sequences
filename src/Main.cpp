@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <ctime>
 
 #include "WaveletTree.h"
 #include "WaveletTreeItem.h"
@@ -24,7 +25,9 @@ int main(){
 	std::cout << "Enter file name:\n";
 	std::cin >> fileName;
 	//std::getline(std::cin, text);
-	std::ifstream in(fileName);
+	std::ifstream in(fileName.c_str());
+
+	std::cout << "Stream opened\n" << std::flush;
 	std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 
 	//LFTable lfTable = LFTable(text);
@@ -51,25 +54,48 @@ int main(){
 	//std::cout << "Count: " << (new PrefixSum(text))->count('C') << "\n";
 	//std::cout << "Count: " << lfTable.countLast('C') << "\n";
 
+	clock_t begin = clock();
+
 	FMIndex index = FMIndex(text);
 	
+	clock_t end = clock();
+
+	std::cout << "Creating index time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n";
+
+	//std::cout << "FMIndex sizeof: " << sizeof(index) << "\n";
+
 	std::string search;
 	do {
 		std::cout << "Enter search pattern: ";
 		std::cin >> search;
-		std::cout << "Count: " << index.count(search) << "\n";
+
+		begin = clock();
+		std::cout << "Count: " << std::flush << index.count(search) << "\n";
+		
+		end = clock();
+
+		std::cout << "Count time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
+		
+		begin = clock();
+
 		std::vector<unsigned> results = index.find(search);
 
-		std::cout << "\rFind: ";
+		end = clock();
+
+		std::cout << "\t\t\t\t\t\t\t\rFind: " << std::flush;
 		if (results.empty()){
-			std::cout << "Can't find pattern: " << search;
+			std::cout << "Can't find pattern: " << search << std::flush;
 		}
 		else{
 			for (std::vector<unsigned>::iterator it = results.begin(); it != results.end(); ++it){
 				std::cout << " " << *it;
 			}
 		}
-		std::cout << "\n";
+		std::cout << "\n" << std::flush;
+
+
+		std::cout << "Search time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
+
 	} while (search[0] != '0');
 
 	return 0;

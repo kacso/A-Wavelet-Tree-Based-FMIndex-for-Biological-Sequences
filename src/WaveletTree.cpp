@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <algorithm>
+#include <math.h>
 
 /**Constructor for WaveletTree class*/
 WaveletTree::WaveletTree(std::string text){
@@ -13,6 +14,10 @@ WaveletTree::WaveletTree(std::string text){
 
 	/**Sort alphabet*/
 	alphabetList.sort();
+}
+
+WaveletTree::~WaveletTree(){
+
 }
 
 WaveletTreeItem* WaveletTree::addChild(std::string text){
@@ -24,7 +29,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	//int textLength = text.length();
 	char breakChar = getMiddleChar(text);
 	unsigned cntLess = 0, cntHigh = 0;
-	bool *bitString = nullptr;
+	std::vector<bool> bitString;
 	std::string leftText, rightText;
 
 	/**Create bitString*/
@@ -59,7 +64,7 @@ WaveletTreeItem* WaveletTree::addChild(std::string text){
 	/**We get to leafs*/
 	else {
 		//std::cout << "leaf; " << text << "\n";
-		treeItem = new WaveletTreeItem(text[0], nullptr, 0);
+		treeItem = new WaveletTreeItem(text[0], bitString, 0);
 
 		/**Add char to alphabet*/
 		alphabetList.push_back(text[0]);
@@ -81,10 +86,10 @@ char WaveletTree::getMiddleChar(std::string text){
 	return (char)ceil(sum / (text.length() - flag));
 }
 
-bool* WaveletTree::createBitString(std::string text, char breakChar,
+std::vector<bool> WaveletTree::createBitString(std::string text, char breakChar,
 		std::string *leftText, std::string *rightText){
 	unsigned cntLess = 0, cntHigh = 0;
-	bool *bitString = (bool*)malloc(text.length() * sizeof(bool));
+	std::vector<bool> bitString(text.length());// = (bool*)malloc(text.length() * sizeof(bool));
 
 	for (unsigned i = 0; i < text.length(); ++i){
 		if (text[i] < breakChar){
@@ -209,8 +214,11 @@ char WaveletTree::getChar(unsigned index, WaveletTreeItem *root){
 
 unsigned WaveletTree::indexOf(char character, unsigned rank){
 	unsigned i = rank - 1;
-	for (; i < root->bitStringLength; ++i) {
-		if (getRank(character, i) == rank) break;
+	unsigned curRank;
+	for (; i < root->bitStringLength; i += rank - curRank) {
+		curRank = getRank(character, i);
+		//if (getRank(character, i) == rank) break;
+		if (curRank == rank) break;
 	}
 	return i;
 }
@@ -236,4 +244,12 @@ unsigned WaveletTree::getAlphabet(char *&arr){
 		arr[i] = *it;
 	}
 	return size;
+}
+
+std::string WaveletTree::toString(){
+	std::string asString;
+	for (unsigned i = 0; i < root->bitStringLength; ++i){
+		asString += getChar(i);
+	}
+	return asString;
 }

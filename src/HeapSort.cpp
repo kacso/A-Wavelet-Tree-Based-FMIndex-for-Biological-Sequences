@@ -1,6 +1,7 @@
 #include "HeapSort.h"
 
 #include <iostream>
+#include <string.h>
 
 /**Danijel
 Implementation of heap sort
@@ -10,8 +11,8 @@ void HeapSort::max_heapify(char **arr, int i, int n) {
 	int j = 2 * i;
 	char *item = arr[i];
 	while (j <= n) {
-		if ((j < n) && (_strcmpi(arr[j], arr[j + 1]) < 0)) j++;
-		if (_strcmpi(item, arr[j]) >= 0) break;
+		if ((j < n) && (strcmp(arr[j], arr[j + 1]) < 0)) j++;
+		if (strcmp(item, arr[j]) >= 0) break;
 		arr[j / 2] = arr[j];
 		j *= 2;
 	}

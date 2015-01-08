@@ -14,11 +14,11 @@ std::vector<unsigned> FMIndex::find(std::string substring){
 
 	/**Return all substrings*/
 	
-	std::cout << "Generating results...\r";
+	std::cout << "Generating results...\r" << std::flush;
 	for (int i = start; i <= end; ++i){
 		results[i - start] = suffixArray->getItem(i);
 	}
-	std::cout << "Generating results: completed\n";
+	std::cout << "Generating results: completed\r" << std::flush;
 	//return suffixArray->getItem(start);
 	return results;
 }

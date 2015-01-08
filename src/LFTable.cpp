@@ -1,12 +1,13 @@
-#include <conio.h>
-#include <string>
+//#include <conio.h>
+#include <string.h>
 #include <iostream>
 
 #include "LFTable.h"
 #include "PrefixSum.h"
 #include "SuffixArray.h"
-#include "HeapSort.h"
+#include "WaveletHeapSort.h"
 #include "Sort.h"
+#include <exception>
 
 WaveletTree *treeFirst;
 WaveletTree *treeLast;
@@ -16,65 +17,82 @@ PrefixSum *prefixSumLast;
 LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 {
 	std::cout << "Creating LF Table\n";
+	
 	std::string textFirst;
 	std::string textLast;
+        
 	word = word + '$';
-	char **arr;
+	//	char **arr;
 	int n = word.length();
 
-
-	std::cout << "Creating rotations...\r";
-
-	arr = new char*[n];
-	/*for (int i = 0; i<n; i++)
-		arr[i] = new char[n + 1];
-*/
-	char* sentence = new char[n + 1];
-	sentence[0] = '\0';
-	strncat_s(sentence, n+1, word.c_str(), n);
-	arr[0] = sentence;
-	for (int i = 1; i < n; i++){
-		//std::cout << "Creating rotations: " << i << "\r";
-		word = word.back()+word.substr(0, n - 1);
-		sentence = new char[n + 1];
-		sentence[0] = '\0';
-		strncat_s(sentence, n + 1, word.c_str(), n);
-		arr[i] = sentence;
-	}
-	std::cout << "Creating rotations: completed\n";
+	WaveletTree **arr = createRotations(word, n);
 	
-	Sort *sort = new HeapSort();
+	Sort *sort = new WaveletHeapSort();
 	sort->sort(arr, n);
-	delete sort;
+      	delete sort;
 
-	/**Genereate suffix Array*/
-	suffixArray->generateArray(this, arr);
-
-	std::cout << "Generating LF...\r";
-
-	for (int i = 0; i < n; i++){
-		//std::cout << "Generating LF: " << i << "\r";
-		std::string str = arr[i];
-		textFirst += str.at(0);
-		textLast += str.back();
-	}
-	std::cout << "Generating LF: completed\n";
+	createFirstAndLast(arr, textFirst, textLast);
 
 	std::cout << "Releasing allocated space...\r";
 	/**Free allocated space*/
-	for (int i = n - 1; i >= 0; --i){
+	/*for (int i = n - 1; i >= 0; --i){
+		arr[i]->~WaveletTree();
 		delete []arr[i];
 	}
-	delete []arr;
+	delete []arr;*/
 	std::cout << "Releasing allocated space: completed\n";
 	//creating WaveletTree
 	treeFirst = new WaveletTree(textFirst);
 	treeLast = new WaveletTree(textLast);
 
+	/**Genereate suffix Array*/
+	suffixArray->generateArray(this, arr);
+
 	prefixSumFirst = new PrefixSum(textFirst);
 	prefixSumLast = new PrefixSum(textLast);
-
+		
 	std::cout << "LF Table generated\n";
+}
+
+WaveletTree** LFTable::createRotations(std::string word, unsigned n){
+  std::cout << "Creating rotations...\r" << std::flush;
+
+	WaveletTree **arr = nullptr;
+
+	try{
+		/**Create array of all rotations stored as WaveletTree*/
+		arr = new WaveletTree*[n];
+
+		/**Create rotations*/
+		for (int i = 0; i < n; ++i){
+		  //	  std::cout << "Creating rotations: " << i << "\r";
+			/**Store current word as WaveletTree*/
+			arr[i] = new WaveletTree(word);
+
+			/**Make next rotation*/
+			word = word.back() + word.substr(0, n - 1);
+		}
+	}
+	catch (std::bad_alloc &e){
+		std::cerr << "bad_alloc caught: " << e.what() << "\n";
+		exit(-1);
+	}
+
+	std::cout << "Creating rotations: completed\n" << std::flush;
+	return arr;
+}
+
+void LFTable::createFirstAndLast(WaveletTree **arr, std::string &textFirst, std::string &textLast){
+  std::cout << "Generating LF...\r" << std::flush;
+	
+	unsigned n = arr[0]->length();
+	/**Generate string from first and last column of all rotations*/
+	for (unsigned i = 0; i < n; i++){
+		textFirst += arr[i]->getChar(0);
+		textLast += arr[i]->getChar(n - 1);
+	}
+
+	std::cout << "Generating LF: completed\n" << std::flush;
 }
 
 int LFTable::countFirst(char sign){
