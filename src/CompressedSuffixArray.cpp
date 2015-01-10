@@ -40,10 +40,6 @@ unsigned CompressedSuffixArray::getItem(unsigned i){
 
 void CompressedSuffixArray::generateArray(LFTable *lfTable, WaveletTree **arr){
   //        std::cout << "suffix array1\n" << std::flush;
-	this->lfTable = lfTable;
-
-	generateArray();
-	return;
 
 	int i = 0, strLast = arr[0]->length() - 1;
 	std::cout << "Generating suffix array...\r" << std::flush;
@@ -60,16 +56,21 @@ void CompressedSuffixArray::generateArray(LFTable *lfTable, WaveletTree **arr){
 }
 
 void CompressedSuffixArray::generateArray(){
-          std::cout << "Generating suffix array...\r" << std::flush;
+    std::cout << "Generating suffix array...\r" << std::flush;
 	unsigned bwtIndex = 0, sIndex = lfTable->getLengthLast() - 1;
 	//	std::cout << "sIndex\n" << std::flush;
 	char newChar = ' ';
 	//while ((newChar = lfTable->getCharOfLast(bwtIndex)) != '\0' && newChar != '\0') {
 	
 	do{
-	  //	        std::cout << "Generating suffix array: "<< sIndex << "   \r" << std::flush;
+	  //std::cout << "Generating suffix array: "<< sIndex << "   \r" << std::flush;
 		newChar = lfTable->getCharLast(bwtIndex);
 		unsigned rank = lfTable->getRankLast(newChar, bwtIndex);
+		
+		if (bwtIndex % compressionRatio == 0 || newChar == '$'){
+			suffixArray[bwtIndex] = sIndex;
+		}
+
 		bwtIndex = lfTable->getIndexFirst(newChar, rank);
 
 		if (bwtIndex < 0) break;

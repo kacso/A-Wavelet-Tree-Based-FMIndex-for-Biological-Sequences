@@ -1,7 +1,35 @@
 #include "FMIndex.h"
+#include "NongZhangChanSA.h"
 
 /**Algoritham from Wikipedia (http://en.wikipedia.org/wiki/FM-index#cite_note-opportunistic_2000-1)
 	for find & count*/
+
+FMIndex::FMIndex(std::string text){
+	std::cout << "Creating FMIndex\n" << std::flush;
+
+	/**Add terminating char*/
+	text += '$';
+
+	/**Create suffix array*/
+	//suffixArray = new CompressedSuffixArray(1);
+	suffixArray = new NongZhangChanSA(text);
+
+	/**Create new LF table*/
+	lfTable = new LFTable(text, suffixArray);
+
+	/**Get alphabet*/
+	unsigned size = lfTable->getAlphabet(alphabet);
+
+	for (unsigned i = 0; i < size; ++i){
+		//std::cout << "Generating alphabet: " << i << "\t\r";
+		mapAlphabet[alphabet[i]] = i;
+	}
+
+	std::cout << "Generating alphabet: completed\n" << std::flush;
+
+
+	std::cout << "FMIndex created\n" << std::flush;
+}
 
 std::vector<unsigned> FMIndex::find(std::string substring){
 	int start, end;

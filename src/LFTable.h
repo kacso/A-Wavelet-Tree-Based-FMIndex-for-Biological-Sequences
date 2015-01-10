@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <string>
-//#include <conio.h>
 #include <iostream>
 #include "IOcc.h"
 #include "PrefixSum.h"
@@ -19,6 +18,8 @@ private:
 	PrefixSum *prefixSumLast;
 	WaveletTree** createRotations(std::string word, unsigned n);
 	void createFirstAndLast(WaveletTree **arr, std::string &textFirst, std::string &textLast);
+	std::string createF(std::string word, SuffixArray *suffixArray);
+	std::string createL(std::string word, SuffixArray *suffixArray);
 
 public:
 	LFTable(std::string word, SuffixArray *suffixArray);

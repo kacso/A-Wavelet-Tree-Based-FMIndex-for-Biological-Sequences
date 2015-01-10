@@ -9,49 +9,44 @@
 #include "Sort.h"
 #include <exception>
 
-WaveletTree *treeFirst;
-WaveletTree *treeLast;
-PrefixSum *prefixSumFirst;
-PrefixSum *prefixSumLast;
-
 LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 {
 	std::cout << "Creating LF Table\n";
-	
-	std::string textFirst;
-	std::string textLast;
         
-	word = word + '$';
-	//	char **arr;
-	int n = word.length();
+	//word = word + '$';
 
-	WaveletTree **arr = createRotations(word, n);
-	
-	Sort *sort = new WaveletHeapSort();
-	sort->sort(arr, n);
-      	delete sort;
+	std::string textFirst = createF(word, suffixArray);
+	std::string textLast = createL(word, suffixArray);
 
-	createFirstAndLast(arr, textFirst, textLast);
-
-	std::cout << "Releasing allocated space...\r";
-	/**Free allocated space*/
-	/*for (int i = n - 1; i >= 0; --i){
-		arr[i]->~WaveletTree();
-		delete []arr[i];
-	}
-	delete []arr;*/
-	std::cout << "Releasing allocated space: completed\n";
-	//creating WaveletTree
 	treeFirst = new WaveletTree(textFirst);
 	treeLast = new WaveletTree(textLast);
-
-	/**Genereate suffix Array*/
-	suffixArray->generateArray(this, arr);
 
 	prefixSumFirst = new PrefixSum(textFirst);
 	prefixSumLast = new PrefixSum(textLast);
 		
 	std::cout << "LF Table generated\n";
+}
+
+std::string LFTable::createL(std::string word, SuffixArray *suffixArray){
+	std::string last;
+	for (unsigned i = 0; i < word.length(); ++i){
+		unsigned item = suffixArray->getItem(i);
+		if (item == 0){
+			last += '$';
+		}
+		else {
+			last += word.at(item - 1);
+		}
+	}
+	return last;
+}
+
+std::string LFTable::createF(std::string word, SuffixArray *suffixArray){
+	std::string first;
+	for (unsigned i = 0; i < word.length(); ++i){
+		first += word.at(suffixArray->getItem(i));
+	}
+	return first;
 }
 
 WaveletTree** LFTable::createRotations(std::string word, unsigned n){
