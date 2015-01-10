@@ -158,6 +158,7 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 	}
 
 	/**Induce SA from SA1*/
+	/**************************ERROR!!!!!!!!!!!!!!!!!!!!!!********************************/
 	/**Set all elements of SA to -1*/
 	for (int i = 0; i < word.length(); ++i) {
 		suffixArray[i] = -1;
@@ -211,7 +212,7 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 */
 bool NongZhangChanSA::getType(std::string word, std::vector<bool> t, unsigned i){
 	/**Last char is always S type*/
-	if (word.at(i) == '$'){
+	if (word.at(i) == '$' ||word.at(i) == '\0'){
 		return true;
 	}
 
