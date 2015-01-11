@@ -13,8 +13,13 @@ public:
 private:
 	void generateArray(std::string word, std::map<unsigned, int> &suffixArray);
 	bool getType(std::string word, std::vector<bool> t, unsigned i);
-	void BToEnd(std::map<char, int> &B, std::map<char, unsigned> alphabet, unsigned n);
-	void BToStart(std::map<char, int> &B, std::map<char, unsigned> alphabet, unsigned n);
+	void BToEnd(std::map<unsigned char, int> &B, std::map<unsigned char, unsigned> alphabet, unsigned n);
+	void BToStart(std::map<unsigned char, int> &B, std::map<unsigned char, unsigned> alphabet, unsigned n);
+
+	void generateArray(std::vector<unsigned> word, std::map<unsigned, int> &suffixArray);
+	bool getType(std::vector<unsigned> word, std::vector<bool> t, unsigned i);
+	void BToEnd(std::map<unsigned, int> &B, std::map<unsigned, unsigned> alphabet, unsigned n);
+	void BToStart(std::map<unsigned, int> &B, std::map<unsigned, unsigned> alphabet, unsigned n);
 };
 
 #endif
