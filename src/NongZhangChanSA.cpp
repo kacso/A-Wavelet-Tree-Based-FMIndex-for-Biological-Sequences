@@ -55,7 +55,7 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 	BToStart(B, alphabet, alphabet.size());
 
 	/**Fill empty elements of suffix array*/
-	for (unsigned i = 0; i < suffixArray.size(); ++i) {
+	for (unsigned i = 0; i < word.length(); ++i) {
 		if (suffixArray[i] > 0) {
 			unsigned k = suffixArray[i] - 1;
 			/**S[SA[i]-1] is L-type?*/
@@ -170,8 +170,12 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 	/**Go through SA1 and put P2[SA1[i]] to the and of appropriate suffix*/
 	for (std::map<unsigned, int>::iterator it = suffixArray1.end(); it != suffixArray1.begin(); ) {
 		--it;
+		//int index = it->second;
 		if (it->second < 0) continue;
-		suffixArray[B[word.at(it->second)]--] = P1[suffixArray1[it->second]];
+		/**Access right element of P1*/
+		auto pit = P1.begin();
+		for (unsigned i = 0; i < it->second; ++i, ++pit);
+		suffixArray[B[word.at(pit->first)]--] = pit->first;
 	}
 
 	/**InduceSAI*/
@@ -195,7 +199,7 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 	BToEnd(B, alphabet, alphabet.size());
 
 	/**Fill rest of elements of suffix array*/
-	for (unsigned i = 0; i < suffixArray.size(); ++i) {
+	for (int i = suffixArray.size() - 1; i >= 0; --i) {
 		if (suffixArray[i] > 0) {
 			unsigned k = suffixArray[i] - 1;
 			if (t[k] == true) {
@@ -232,7 +236,7 @@ bool NongZhangChanSA::getType(std::string word, std::vector<bool> t, unsigned i)
 
 void NongZhangChanSA::BToEnd(std::map<char, int> &B, std::map<char, unsigned> alphabet, unsigned n) {
 	std::map<char, unsigned>::iterator it = alphabet.begin();
-	B['$'] = 0;
+	B[it->first] = 0;
 	std::map<char, unsigned>::iterator exIt = it++;
 	for (unsigned i = 1; i < n; ++i, ++it) {
 		B[it->first] = it->second + B[exIt->first];
@@ -242,7 +246,7 @@ void NongZhangChanSA::BToEnd(std::map<char, int> &B, std::map<char, unsigned> al
 
 void NongZhangChanSA::BToStart(std::map<char, int> &B, std::map<char, unsigned> alphabet, unsigned n) {
 	std::map<char, unsigned>::iterator it = alphabet.begin();
-	B['$'] = 0;
+	B[it->first] = 0;
 	std::map<char, unsigned>::iterator exIt = it++;
 	for (unsigned i = 1; i < n; ++i, ++it) {
 		B[it->first] = exIt->second + B[exIt->first];
