@@ -1,9 +1,9 @@
 PROJECT = FMIndex
-SOURCE = Main.cpp FMIndex.cpp PrefixSum.cpp WaveletTree.cpp LFTable.cpp CompressedSuffixArray.cpp HeapSort.cpp WaveletHeapSort.cpp
-HEADERS = FMIndex.h PrefixSum.h WaveletTree.h CompressedSuffixArray.h HeapSort.h LFTable.h WaveletTreeItem.h Sort.h SuffixArray.h IOcc.h WaveletHeapSort.h
+SOURCE = Main.cpp FMIndex.cpp PrefixSum.cpp WaveletTree.cpp LFTable.cpp KarkkainenSA.cpp 
+HEADERS = FMIndex.h PrefixSum.h WaveletTree.h LFTable.h WaveletTreeItem.h Sort.h SuffixArray.h IOcc.h KarkkainenSA.h sais.hxx esa.hxx
 
 CC = g++
-CXXFLAGS = -std=c++11
+CXXFLAGS = -std=c++11 -w
 LDFLAGS = 
 OBJECTS = ${SOURCE:.cpp=.o}
 

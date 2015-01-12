@@ -1,7 +1,7 @@
-#include "SomeSA.h"
+#include "KarkkainenSA.h"
 #include "esa.hxx"
 
-SomeSA::SomeSA(std::string word) {
+KarkkainenSA::KarkkainenSA(std::string word) {
 	std::cout << "Generating suffix array...\r";
 	int alphaSize = 0x100;  // This can be very large
 	int nodeNum = 0;
@@ -27,6 +27,9 @@ SomeSA::SomeSA(std::string word) {
 }
 
 
-unsigned SomeSA::getItem(unsigned i) {
-	return suffixArray[i];
+unsigned KarkkainenSA::getItem(unsigned i) {
+	if (i >= 0 && i < suffixArray.size()) {
+		return suffixArray[i];
+	}
+	return -1;
 }
