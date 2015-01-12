@@ -1,6 +1,6 @@
 #include "FMIndex.h"
 #include "NongZhangChanSA.h"
-
+#include "SomeSA.h"
 /**Algoritham from Wikipedia (http://en.wikipedia.org/wiki/FM-index#cite_note-opportunistic_2000-1)
 	for find & count*/
 
@@ -12,7 +12,8 @@ FMIndex::FMIndex(std::string text){
 
 	/**Create suffix array*/
 	//suffixArray = new CompressedSuffixArray(1);
-	suffixArray = new NongZhangChanSA(text);
+	//suffixArray = new NongZhangChanSA(text);
+	suffixArray = new SomeSA(text);
 
 	/**Create new LF table*/
 	lfTable = new LFTable(text, suffixArray);

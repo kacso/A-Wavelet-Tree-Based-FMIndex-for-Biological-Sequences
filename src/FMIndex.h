@@ -3,7 +3,6 @@
 
 #include "LFTable.h"
 #include "SuffixArray.h"
-#include "CompressedSuffixArray.h"
 #include <string>
 #include <vector>
 #include <algorithm>    // std::sort

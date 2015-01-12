@@ -5,9 +5,6 @@
 #include "LFTable.h"
 #include "PrefixSum.h"
 #include "SuffixArray.h"
-#include "WaveletHeapSort.h"
-#include "Sort.h"
-#include <exception>
 
 LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 {
@@ -47,47 +44,6 @@ std::string LFTable::createF(std::string word, SuffixArray *suffixArray){
 		first += word.at(suffixArray->getItem(i));
 	}
 	return first;
-}
-
-WaveletTree** LFTable::createRotations(std::string word, unsigned n){
-  std::cout << "Creating rotations...\r" << std::flush;
-
-	WaveletTree **arr = nullptr;
-
-	try{
-		/**Create array of all rotations stored as WaveletTree*/
-		arr = new WaveletTree*[n];
-
-		/**Create rotations*/
-		for (int i = 0; i < n; ++i){
-		  //	  std::cout << "Creating rotations: " << i << "\r";
-			/**Store current word as WaveletTree*/
-			arr[i] = new WaveletTree(word);
-
-			/**Make next rotation*/
-			word = word.back() + word.substr(0, n - 1);
-		}
-	}
-	catch (std::bad_alloc &e){
-		std::cerr << "bad_alloc caught: " << e.what() << "\n";
-		exit(-1);
-	}
-
-	std::cout << "Creating rotations: completed\n" << std::flush;
-	return arr;
-}
-
-void LFTable::createFirstAndLast(WaveletTree **arr, std::string &textFirst, std::string &textLast){
-  std::cout << "Generating LF...\r" << std::flush;
-	
-	unsigned n = arr[0]->length();
-	/**Generate string from first and last column of all rotations*/
-	for (unsigned i = 0; i < n; i++){
-		textFirst += arr[i]->getChar(0);
-		textLast += arr[i]->getChar(n - 1);
-	}
-
-	std::cout << "Generating LF: completed\n" << std::flush;
 }
 
 int LFTable::countFirst(char sign){

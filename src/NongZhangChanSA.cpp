@@ -19,9 +19,10 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 			alphabet[word.at(i)] = 1;
 		}
 		else {*/
-			++alphabet[word.at(i)];
+		++alphabet[word.at(i)];
 	//	}
-
+		/**Set all elements of SA to -1*/
+		suffixArray[i] = -1;
 	}
 
 	/**Find all LMS substrings in S and store in P*/
@@ -40,9 +41,9 @@ void NongZhangChanSA::generateArray(std::string word, std::map<unsigned, int> &s
 	BToEnd(B, alphabet, alphabet.size());
 
 	/**Set all elements of SA to -1*/
-	for (unsigned i = 0; i < word.length(); ++i) {
+	/*for (unsigned i = 0; i < word.length(); ++i) {
 		suffixArray[i] = -1;
-	}
+	}*/
 
 	/**Sort LMS: step1*/
 	for (std::map<int, int>::iterator it = P1.begin(); it != P1.end(); ++it) {
@@ -287,13 +288,12 @@ void NongZhangChanSA::generateArray(std::vector<unsigned> word, std::map<unsigne
 		t[i] = getType(word, t, i);
 
 		/**Generating alphabet*/
-		/*	if (alphabet.count(word.at(i)) == 0) {
-		alphabet[word.at(i)] = 1;
-		}
-		else {*/
+		
 		++alphabet[word.at(i)];
-		//	}
 
+
+		/**Set suffixArray elements to -1*/
+		suffixArray[i] = -1;
 	}
 
 	/**Find all LMS substrings in S and store in P*/
@@ -304,6 +304,7 @@ void NongZhangChanSA::generateArray(std::vector<unsigned> word, std::map<unsigne
 			//P1.insert(P1.end(), i);
 			P1[i] = -1;
 		}
+
 	}
 
 	/**Generate bucket array*/
@@ -312,9 +313,9 @@ void NongZhangChanSA::generateArray(std::vector<unsigned> word, std::map<unsigne
 	BToEnd(B, alphabet, alphabet.size());
 
 	/**Set all elements of SA to -1*/
-	for (unsigned i = 0; i < word.size(); ++i) {
+	/*for (unsigned i = 0; i < word.size(); ++i) {
 		suffixArray[i] = -1;
-	}
+	}*/
 
 	/**Sort LMS: step1*/
 	for (std::map<int, int>::iterator it = P1.begin(); it != P1.end(); ++it) {

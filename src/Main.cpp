@@ -4,10 +4,7 @@
 #include <vector>
 #include <ctime>
 
-#include "WaveletTree.h"
-#include "WaveletTreeItem.h"
 #include "FMIndex.h"
-#include "PrefixSum.h"
 
 void printTree(WaveletTreeItem *root){
 	if (root == nullptr || root->bitStringLength == 0) return;
@@ -19,13 +16,21 @@ void printTree(WaveletTreeItem *root){
 	printTree(root->rightChild);
 }
 
-int main(){
+int main(int argc, char* argv[]){
+
+	if (argc < 3) {
+		std::cerr << "Usage: " << argv[0] << " filename sequenceIdentifier\n";
+		return 1;
+	}
+
+	char* fileName = argv[1];
+
 	std::ios::sync_with_stdio(false);
-	std::string fileName;
+	/*std::string fileName;
 	std::cout << "Enter file name:\n";
-	std::cin >> fileName;
+	std::cin >> fileName;*/
 	//std::getline(std::cin, text);
-	std::ifstream in(fileName.c_str());
+	std::ifstream in(fileName);
 
 	std::cout << "Stream opened\n" << std::flush;
 	std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
@@ -65,10 +70,11 @@ int main(){
 	//std::cout << "FMIndex sizeof: " << sizeof(index) << "\n";
 
 	std::string search;
-	do {
+	while (1) {
 		std::cout << "Enter search pattern: ";
 		std::cin >> search;
 
+		if (search[0] == '0') break;
 		begin = clock();
 		std::cout << "Count: " << std::flush << index.count(search) << "\n";
 		
@@ -96,7 +102,7 @@ int main(){
 
 		std::cout << "Search time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
 
-	} while (search[0] != '0');
+	}
 
 	return 0;
 }

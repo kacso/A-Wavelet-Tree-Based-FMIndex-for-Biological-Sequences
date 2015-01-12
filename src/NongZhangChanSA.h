@@ -1,3 +1,8 @@
+/**************************************************************
+* Suffix Array is implemented with
+* Nong-Zhang-Chan algorithm
+***************************************************************/
+
 #ifndef NongZhangChanSA_H
 #define NongZhangChanSA_H
 

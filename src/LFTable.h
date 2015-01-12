@@ -16,8 +16,6 @@ private:
 	IOcc *treeLast;
 	PrefixSum *prefixSumFirst;
 	PrefixSum *prefixSumLast;
-	WaveletTree** createRotations(std::string word, unsigned n);
-	void createFirstAndLast(WaveletTree **arr, std::string &textFirst, std::string &textLast);
 	std::string createF(std::string word, SuffixArray *suffixArray);
 	std::string createL(std::string word, SuffixArray *suffixArray);
 
