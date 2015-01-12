@@ -3,6 +3,9 @@
 /**Algoritham from Wikipedia (http://en.wikipedia.org/wiki/FM-index#cite_note-opportunistic_2000-1)
 	for find & count*/
 
+/**Constructor of FMIndex
+* [in] text : string on which index will be created
+*/
 FMIndex::FMIndex(std::string text){
 	std::cout << "Creating FMIndex\n" << std::flush;
 
@@ -29,6 +32,10 @@ FMIndex::FMIndex(std::string text){
 	std::cout << "FMIndex created\n" << std::flush;
 }
 
+/**Locates all occurences of substring
+* [in] substring to be located
+* [out] vector with index for every occurence of substring
+*/
 std::vector<unsigned> FMIndex::find(std::string substring){
 	int start, end;
 
@@ -49,6 +56,7 @@ std::vector<unsigned> FMIndex::find(std::string substring){
 	return results;
 }
 
+/**Returns number of occurences of substring*/
 int FMIndex::count(std::string substring){
 	int start, end, cnt;
 	count(start, end, substring);
@@ -59,6 +67,9 @@ int FMIndex::count(std::string substring){
 		return cnt;
 }
 
+/**Locates array in which is substring located in lf table
+* Returns first and last position in lf table in start and end
+*/
 void FMIndex::count(int &start, int &end, std::string substring){
 	int index = substring.length() - 1;
 	char nextChar = substring[index--];

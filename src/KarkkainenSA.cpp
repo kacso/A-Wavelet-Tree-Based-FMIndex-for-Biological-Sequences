@@ -1,6 +1,9 @@
 #include "KarkkainenSA.h"
 #include "esa.hxx"
 
+/**Constructor of object
+* Suffix array will be generated for string word
+*/
 KarkkainenSA::KarkkainenSA(std::string word) {
 	std::cout << "Generating suffix array...\r";
 	int alphaSize = 0x100;  // This can be very large
@@ -26,7 +29,7 @@ KarkkainenSA::KarkkainenSA(std::string word) {
 	std::cout << "Generating suffix array: completed\n";
 }
 
-
+/**Returns index in string for i-th item in suffix array*/
 unsigned KarkkainenSA::getItem(unsigned i) {
 	if (i >= 0 && i < suffixArray.size()) {
 		return suffixArray[i];

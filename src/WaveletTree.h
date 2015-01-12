@@ -22,7 +22,6 @@ public:
 	std::string toString();
 private:
 	WaveletTreeItem* addChild(std::string text);
-	unsigned getRank(char character, unsigned index, WaveletTreeItem *root);
 	char getMiddleChar(std::string text);
 	std::vector<bool> createBitString(std::string text, char breakChar,
 		std::string *leftText, std::string *rightText);

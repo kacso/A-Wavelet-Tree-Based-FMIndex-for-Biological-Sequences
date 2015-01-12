@@ -1,4 +1,3 @@
-//#include <conio.h>
 #include <string.h>
 #include <iostream>
 
@@ -6,6 +5,10 @@
 #include "PrefixSum.h"
 #include "SuffixArray.h"
 
+/**Contructor of object
+* [in] word : string on which table will be generated
+* [in] suffixArray : reference to suffix array of word
+*/
 LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 {
 	std::cout << "Creating LF Table\n";
@@ -24,6 +27,11 @@ LFTable::LFTable(std::string word, SuffixArray *suffixArray)
 	std::cout << "LF Table generated\n";
 }
 
+/**Creates last columns of lf table as string
+* [in] word : string on which table will be generated
+* [in] suffixArray : reference to suffix array of word
+* [out] last column
+*/
 std::string LFTable::createL(std::string word, SuffixArray *suffixArray){
 	std::string last;
 	for (unsigned i = 0; i < word.length(); ++i){
@@ -38,6 +46,11 @@ std::string LFTable::createL(std::string word, SuffixArray *suffixArray){
 	return last;
 }
 
+/**Creates first columns of lf table as string
+* [in] word : string on which table will be generated
+* [in] suffixArray : reference to suffix array of word
+* [out] first column
+*/
 std::string LFTable::createF(std::string word, SuffixArray *suffixArray){
 	std::string first;
 	for (unsigned i = 0; i < word.length(); ++i){
