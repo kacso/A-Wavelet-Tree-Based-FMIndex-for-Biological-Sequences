@@ -17,23 +17,62 @@ void printTree(WaveletTreeItem *root){
 }
 
 int main(int argc, char* argv[]){
-
+	/**Check number of parameteres*/
 	if (argc < 3) {
 		std::cerr << "Usage: " << argv[0] << " filename sequenceIdentifier\n";
 		return 1;
 	}
 
+	/***Read parameters*/
 	char* fileName = argv[1];
-
+	char* sequenceID = argv[2];
+	
+	std::string text;
 	std::ios::sync_with_stdio(false);
+
+	/**Open stream*/
+	std::ifstream stream;
+	stream.open(fileName);
+
+	if (!stream.is_open()) {
+		/**Problem with opening file*/
+		std::cout << "Unable to open file: " << fileName << std::endl;
+		exit(2);
+	}
+
+	/**Read sequnce from file in text*/
+	std::string line;
+	bool readingFlag = false;
+	while (getline(stream, line)) {
+		/**Check if this is new sequence*/
+		if (line.at(0) == '>') {
+			/**If we were reading sequence before than this is end*/
+			if (readingFlag) {
+				break;
+			}
+			/**If not then check if this is right sequence*/
+			if (line.find(sequenceID) != std::string::npos) {
+				readingFlag = true;
+				continue;
+			}
+		}
+		/**If we are at right sequence than save it*/
+		else if (readingFlag) {
+			text += line;
+		}
+	}
+
+	/**Close stream*/
+	stream.close();
+
 	/*std::string fileName;
 	std::cout << "Enter file name:\n";
 	std::cin >> fileName;*/
 	//std::getline(std::cin, text);
-	std::ifstream in(fileName);
+	//std::ifstream in(fileName);
 
-	std::cout << "Stream opened\n" << std::flush;
-	std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+	//std::cout << "Stream opened\n" << std::flush;
+	//std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 
 	//LFTable lfTable = LFTable(text);
 
