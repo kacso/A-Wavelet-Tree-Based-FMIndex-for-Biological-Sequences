@@ -110,37 +110,44 @@ int main(int argc, char* argv[]){
 
 	std::string search;
 	while (1) {
+		std::cout << "\nChoose option\n\n[1] : Count\n[2] : Find\n[0] : Exit\n";
+		short option;
+		std::cin >> option;
+
+		if (option == 0) break;
+
 		std::cout << "Enter search pattern: ";
 		std::cin >> search;
 
-		if (search[0] == '0') break;
-		begin = clock();
-		std::cout << "Count: " << std::flush << index.count(search) << "\n";
-		
-		end = clock();
+		if (option == 1) {
+			begin = clock();
+			std::cout << "Count: " << std::flush << index.count(search) << "\n";
 
-		std::cout << "Count time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
-		
-		begin = clock();
+			end = clock();
 
-		std::vector<unsigned> results = index.find(search);
-
-		end = clock();
-
-		std::cout << "\t\t\t\t\t\t\t\rFind: " << std::flush;
-		if (results.empty()){
-			std::cout << "Can't find pattern: " << search << std::flush;
+			std::cout << "Count time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
 		}
-		else{
-			for (std::vector<unsigned>::iterator it = results.begin(); it != results.end(); ++it){
-				std::cout << " " << *it;
+		else if (option == 2) {
+			begin = clock();
+
+			std::vector<unsigned> results = index.find(search);
+
+			end = clock();
+
+			std::cout << "                                   \rFind: " << std::flush;
+			if (results.empty()){
+				std::cout << "Can't find pattern: " << search << std::flush;
 			}
+			else{
+				for (std::vector<unsigned>::iterator it = results.begin(); it != results.end(); ++it){
+					std::cout << " " << *it;
+				}
+			}
+			std::cout << "\n" << std::flush;
+
+
+			std::cout << "Search time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
 		}
-		std::cout << "\n" << std::flush;
-
-
-		std::cout << "Search time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
-
 	}
 
 	return 0;
