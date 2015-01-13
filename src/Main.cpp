@@ -65,7 +65,8 @@ int main(int argc, char* argv[]){
 	/**Close stream*/
 	stream.close();
 
-	/*std::string fileName;
+	/* Used for testing units of program
+	std::string fileName;
 	std::cout << "Enter file name:\n";
 	std::cin >> fileName;*/
 	//std::getline(std::cin, text);
@@ -93,21 +94,15 @@ int main(int argc, char* argv[]){
 		std::cout << "(T, " << i << ")" << tree->getRank('T', i) << "\n";
 
 		std::cout << "Char at index " << i << ": " << tree->getChar(i) << "\n";
-	}*/
+	}
 
-	//std::cout << "Count: " << (new PrefixSum(text))->count('C') << "\n";
-	//std::cout << "Count: " << lfTable.countLast('C') << "\n";
+	std::cout << "Count: " << (new PrefixSum(text))->count('C') << "\n";
+	std::cout << "Count: " << lfTable.countLast('C') << "\n";*/
 
-	clock_t begin = clock();
-
+	/**Create index*/
 	FMIndex index = FMIndex(text);
-	
-	clock_t end = clock();
-
-	std::cout << "Creating index time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n";
-
-	//std::cout << "FMIndex sizeof: " << sizeof(index) << "\n";
-
+        
+	/**Search over text*/
 	std::string search;
 	while (1) {
 		std::cout << "\nChoose option\n\n[1] : Count\n[2] : Find\n[0] : Exit\n";
@@ -120,19 +115,10 @@ int main(int argc, char* argv[]){
 		std::cin >> search;
 
 		if (option == 1) {
-			begin = clock();
 			std::cout << "Count: " << std::flush << index.count(search) << "\n";
-
-			end = clock();
-
-			std::cout << "Count time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
 		}
 		else if (option == 2) {
-			begin = clock();
-
 			std::vector<unsigned> results = index.find(search);
-
-			end = clock();
 
 			std::cout << "                                   \rFind: " << std::flush;
 			if (results.empty()){
@@ -144,9 +130,6 @@ int main(int argc, char* argv[]){
 				}
 			}
 			std::cout << "\n" << std::flush;
-
-
-			std::cout << "Search time = " << (double)(end - begin) / CLOCKS_PER_SEC << "\n" << std::flush;
 		}
 	}
 
