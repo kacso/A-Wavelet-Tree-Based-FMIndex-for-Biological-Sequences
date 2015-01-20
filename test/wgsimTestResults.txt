@@ -1,0 +1,56 @@
+Sequence length: 10^1
+	Memory: 124672B
+	Index creation time (s): 0.000278
+	Search time (s)	 Count time (s)	   Pattern length
+	5.4e-5		 1.8e-5			10^0
+	8.8e-5		 5.9e-5			10^1
+
+Sequence length: 10^2
+	Memory: 125731B
+	Index creation time (s): 0.000635
+	Search time (s)	 Count time (s)	   Pattern length
+	6e-5		 1.7e-5			10^0
+	0.000234	 0.000212		10^1
+	0.002647	 0.002202		10^2
+
+Sequence length: 10^3
+	Memory: 129785B
+	Index creation time (s): 0.005719
+	Search time (s)	 Count time (s)	  Pattern length
+	8.1e-5		 1.8e-5			10^0
+	0.002232	 0.002248		10^1
+	0.01431		 0.011487		10^2
+	0.090894	 0.086919		10^3
+
+Sequence length: 10^4
+	Memory: 172793B
+	Index creation time (s): 0.025601
+	Search time (s)	 Count time (s)  Pattern length
+	0.000273	 1.7e-5			10^0
+	0.01103		 0.013749		10^1
+	0.075099	 0.073634		10^2
+	0.736624	 0.735301		10^3
+//nije sve?	1.31704		 1.30743		10^4
+
+
+Sequence length: 10^5
+	Memory: 606345B
+	Index creation time (s): 0.207198
+	Search time (s)	 Count time (s)	  Pattern length
+	0.002635	 1.8e-5			10^0
+	0.083499	 0.84742		10^1
+	0.819831	 0.816192		10^2
+	7.20286		 7.18593		10^3
+						10^4
+		   			   	10^5	
+Sequence length: 10^6
+	Memory:	5024682B	
+	Index creation time (s): 2.19767
+	Search time (s)	 Count time (s)	  Pattern length
+	0.013445	 1.7e-5			10^0
+	0.68512		 0.684397		10^1
+	6.24546		 6.2236			10^2
+	81.9767		 81.9			10^3
+						10^4
+						10^5
+						10^6
